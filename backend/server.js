@@ -1,4 +1,5 @@
 const app=require('./app');
+const connectDatabase = require('./db/Database');
 
 
 process.on('uncaughtException', (err)=>{
@@ -6,11 +7,15 @@ process.on('uncaughtException', (err)=>{
     console.log("shutting down the server for handling uncaught exceptions");
 })
 
+// config
 if (process.env.NODE_ENV !== "PRODUCTION") {
     require("dotenv").config({
       path: "backend/config/.env",
     });
   }
+
+// connect database
+connectDatabase();
 
   const server=app.listen(process.env.PORT, ()=>{
     console.log(`Sever started on port number ${process.env.PORT}`)
