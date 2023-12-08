@@ -591,7 +591,7 @@ export const navItems = [
     },
   ];
   
-  export const footerProductLinks = [
+  export const footerCompanyLinks = [
     {
       name: "About us",
       link: "/about"
@@ -611,7 +611,7 @@ export const navItems = [
     },
   ];
   
-  export const footercompanyLinks = [
+  export const footerProductsLinks = [
     {
       name: "Game & Video",
     },
