@@ -9,6 +9,7 @@ const jwt=require('jsonwebtoken');
 const sendMail=require('../utils/sendMail');
 const sendToken=require('../utils/jwtToken');
 const catchAsyncErrors=require('../middleware/catchAsyncErrors');
+const {isAuthenticated} = require('../middleware/auth');
 
 router.post("/create-user", upload.single("file"), async (req, res, next) => {
   try {
@@ -46,6 +47,10 @@ router.post("/create-user", upload.single("file"), async (req, res, next) => {
         email: user.email,
         subject: "Activate your account",
         message: `Hello ${user.name}, please click on the link to activate your account ${activationUrl}`,
+      });
+      res.status(201).json({
+        success: true,
+        message: `please check your email:- ${user.email} to activate your account!`,
       });
     } catch (error) {
       return next(new ErrorHandler(error.message, 500));
@@ -97,5 +102,52 @@ router.post(
     }
   })
 );
+
+// loign
+router.post(
+  "/login-user",
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const { email, password } = req.body;
+
+      if (!email || !password) {
+        return next(new ErrorHandler("Please provide all the fields", 400));
+      }
+      const user = await User.findOne({ email }).select("+password");
+
+      if (!user) {
+        return next(new ErrorHandler("User doen't exists", 400));
+      }
+
+      const isPasswordValid = await user.comparePassword(password);
+      if (!isPasswordValid) {
+        return next(new ErrorHandler("Plese provide valid information", 400));
+      }
+      sendToken(user, 201, res);
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  })
+);
+
+
+// load user
+router.get('/getuser', isAuthenticated, catchAsyncErrors(async(req, res, next)=>{
+  try{
+    const user=await User.findById(req.user.id);
+
+    if(!user){
+      return next(new ErrorHandler("User doen't exists", 400));
+    }
+    res.status(200).json({
+      success:true,
+      user
+    })
+  }
+  catch(err){
+    return next(new ErrorHandler(err.message, 500));
+  }
+})
+)
 
 module.exports = router;
