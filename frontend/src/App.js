@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import './App.css';
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
-import { LoginPage, SignupPage, ActivationPage, HomePage, BestSellingPage, ProductsPage, FAQPage, EventsPage } from './Routes';
+import { LoginPage, SignupPage, ActivationPage, HomePage, BestSellingPage, ProductsPage, FAQPage, EventsPage, ProductDetailsPage } from './Routes';
 import { ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {loadUser} from './redux/actions/user';
@@ -43,6 +43,7 @@ const App = () => {
               element={<ActivationPage />}
             />
             <Route path='/products' element={<ProductsPage/>}/>
+            <Route path='product/:name' element={<ProductDetailsPage/>}/>
             <Route path='/best-selling' element={<BestSellingPage/>}/>
             <Route path='/events' element={<EventsPage/>}/>
             <Route path='/faq' element={<FAQPage/>}/>

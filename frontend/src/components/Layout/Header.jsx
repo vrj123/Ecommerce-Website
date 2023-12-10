@@ -14,12 +14,16 @@ import Navbar from "./Navbar";
 import { CgProfile } from "react-icons/cg";
 import {useSelector} from 'react-redux';
 import { local_server } from "../../server";
+import Cart from '../Cart/Cart';
+import WishList from '../WishList/WishList';
 
 const Header = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchData, setSearchData] = useState(null);
   const [active, setActive] = useState(false);
   const [dropDown, setDropDown] = useState(false);
+  const [openCart, setOpenCart]=useState(false);
+  const [openWishList, setOpenWishList]=useState(false);
 
   const {isAuthenticated, user}=useSelector((state)=>state.user);
   console.log(isAuthenticated);
@@ -127,7 +131,7 @@ const Header = () => {
 
           <div className="flex">
             <div className={`${styles.noramlFlex}`}>
-              <div className="relative cursor-pointer mr-[15px]">
+              <div className="relative cursor-pointer mr-[15px]" onClick={()=>setOpenWishList(true)}>
                 <AiOutlineHeart className="text-white" size={30} />
                 <span className="bg-[#3bc177] rounded-full h-4 w-4 text-[12px] absolute top-0 right-0 leading-tight text-center text-white font-mono">
                   0
@@ -136,7 +140,7 @@ const Header = () => {
             </div>
 
             <div className={`${styles.noramlFlex}`}>
-              <div className="relative cursor-pointer mr-[15px]">
+              <div className="relative cursor-pointer mr-[15px]" onClick={()=>setOpenCart(true)}>
                 <AiOutlineShoppingCart className="text-white" size={30} />
                 <span className="bg-[#3bc177] rounded-full h-4 w-4 text-[12px] absolute top-0 right-0 leading-tight text-center text-white font-mono">
                   0
@@ -160,6 +164,16 @@ const Header = () => {
               }
               </div>
             </div>
+            {
+              openCart?(
+                <Cart setOpenCart={setOpenCart}/>
+              ):null
+            }
+            {
+              openWishList?(
+                <WishList setOpenWishList={setOpenWishList}/>
+              ):null
+            }
           </div>
         </div>
       </div>

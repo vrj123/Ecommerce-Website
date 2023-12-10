@@ -6,9 +6,11 @@ const DropDown = ({ categoriesData, setDropDown }) => {
 
   const navigate=useNavigate();
   const handleSubmit=(i)=>{
-    navigate(`products?category=${i.title}`);
+
+    const category=i.title.replace(/\s+/g, "-");
+    navigate(`/products?category=${category}`);
     setDropDown(false);
-    window.location.reload();
+    window.location.reload(true);
   }
 
 
