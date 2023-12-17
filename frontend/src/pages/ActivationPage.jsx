@@ -18,12 +18,16 @@ const ActivationPage = () => {
                     })
                     .catch((err)=>{
                         setError(true);
+                        console.log(err);
                     });
             }
             activationEmail();
         }
+        console.log("Hello");
         
     }, [])
+
+    console.log("Activation called");
 
 
   return (

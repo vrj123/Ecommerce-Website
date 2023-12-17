@@ -32,12 +32,13 @@ const Categories = () => {
             <div className='grid grid-cols-1 gap-[5px] md:grid-cols-2 md:gap-[10px] lg:grid-cols-4 lg:gap-[20px] xl:grid-cols-5 xl:gap-[30px]'>
             {
                 categoriesData && categoriesData.map((i, index)=>{
+                    const category=i.title.replace(/\s+/g, "-");
                     const handleSubmit=(i)=>{
-                        navigate(`/products?categories=${i.title}`)
+                        navigate(`/products?categories=${category}`)
                     }
                     return(
                         <div key={index} className='flex items-center justify-between cursor-pointer overflow-hidden h-[100px]' onClick={()=>handleSubmit(i)}>
-                            <h5 className='text-[18px leading-[1.3]'>{i.title}</h5>
+                            <h5 className='text-[18px leading-[1.3]'>{category}</h5>
                             <img src={i.image_Url} alt="" className='object-cover w-[120px]'/>
                         </div>
                     )
