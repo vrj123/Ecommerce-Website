@@ -33,10 +33,6 @@ const App = () => {
   }, []);
 
   return (
-    <>
-      {loading ? (
-        <div>Loading page...</div>
-      ) : (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<HomePage />} />
@@ -73,8 +69,6 @@ const App = () => {
             theme="dark"
           />
         </BrowserRouter>
-      )}
-    </>
   );
 };
 
