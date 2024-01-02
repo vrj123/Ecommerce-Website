@@ -31,7 +31,7 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
   const user=require('./controller/user');
   const shop=require('./controller/shop');
   const product=require('./controller/product');
-  // const event=require('./controller/event');
+  const event=require('./controller/event');
   // const couponCode=require('./controller/couponCode');
   // const payment=require('./controller/payment');
   // const order=require('./controller/order');
@@ -39,7 +39,7 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
   app.use('/api/v2/user', user);
   app.use('/api/v2/shop', shop);
   app.use('/api/v2/product', product);
-  // app.use('/api/v2/event', event);
+  app.use('/api/v2/event', event);
   // app.use('/api/v2/coupon', couponCode);
   // app.use('/api/v2/payment', payment);
   // app.use('/api/v2/order', order);
