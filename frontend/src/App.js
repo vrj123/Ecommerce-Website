@@ -23,6 +23,7 @@ import { useSelector } from "react-redux";
 import ShopProtectedRoute from "./ProtectedRoutes/ShopProtectedRoute";
 import { ShopDashboardPage, ShopLoginPage } from "./ShopRoutes";
 import { loadSeller } from "./redux/actions/seller";
+import ShopCreateProduct from "./components/Shop/ShopCreateProduct";
 // import ShopDashboardPage from './pages/Shop/ShopDashboardPage';
 
 
@@ -67,6 +68,14 @@ const App = () => {
           />
           <Route path="/shop-login" element={<ShopLoginPage />} />
           <Route path="/shop-create" element={<ShopCreate />} />
+          <Route
+            path="/dashboard-create-product"
+            element={
+              <ShopProtectedRoute>
+                <ShopCreateProduct />
+              </ShopProtectedRoute>
+            }
+          />
           </Routes>
           <ToastContainer
             position="bottom-center"
