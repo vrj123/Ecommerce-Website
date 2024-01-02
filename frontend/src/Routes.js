@@ -8,6 +8,7 @@ import EventsPage from './pages/EventsPage';
 import ProductsPage from "./pages/ProductsPage";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
 import ProfilePage from "./pages/ProfilePage";
+import ShopCreate from './components/Shop/ShopCreate';
 
 export {
     LoginPage,
@@ -19,5 +20,6 @@ export {
     EventsPage,
     ProductsPage,
     ProductDetailsPage,
-    ProfilePage
+    ProfilePage,
+    ShopCreate
 }

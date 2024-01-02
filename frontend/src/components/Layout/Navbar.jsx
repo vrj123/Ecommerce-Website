@@ -5,12 +5,12 @@ import { NavLink } from 'react-router-dom';
 
 const Navbar = () => {
   return (
-    <div className={`${styles.noramlFlex}`}>
+    <div className="flex flex-col 800px:flex-row mt-4 800px:mt-0">
     {
         navItems && navItems.map((item, index)=>{
             return(
-                <div className='flex' key={index}>
-                <NavLink className={({isActive})=>`${isActive?'text-[#17dd1f]':'text-white'} cursor-pointer px-6 font-500`} to={item.url}>{item.title}</NavLink>
+                <div className='flex py-2 800px:py-0' key={index}>
+                <NavLink className={({isActive})=>`${isActive?'text-[#17dd1f]':'800px:text-white'} cursor-pointer 800px:px-6 px-2 font-500`} to={item.url}>{item.title}</NavLink>
                 </div>
                 
             )

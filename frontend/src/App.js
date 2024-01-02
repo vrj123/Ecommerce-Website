@@ -11,7 +11,8 @@ import {
   FAQPage,
   EventsPage,
   ProductDetailsPage,
-  ProfilePage
+  ProfilePage,
+  ShopCreate
 } from "./Routes";
 import { ToastContainer } from "react-toastify";
 import ProtectedRoute from './ProtectedRoutes/ProtectedRoute';
@@ -19,17 +20,18 @@ import "react-toastify/dist/ReactToastify.css";
 import { loadUser } from "./redux/actions/user";
 import store from "./redux/store";
 import { useSelector } from "react-redux";
+import ShopProtectedRoute from "./ProtectedRoutes/ShopProtectedRoute";
+import { ShopDashboardPage, ShopLoginPage } from "./ShopRoutes";
+import { loadSeller } from "./redux/actions/seller";
+// import ShopDashboardPage from './pages/Shop/ShopDashboardPage';
+
 
 const App = () => {
   const { loading } = useSelector((state) => state.user);
 
   useEffect(() => {
-    // axios.get(`${server}/user/getUser`, {withCredentials:true}).then((res)=>{
-    //   toast.success("Welcome to E-Shop");
-    // }).catch((err)=>{
-    //   toast.error(err.response.data.message);
-    // })
     store.dispatch(loadUser());
+    store.dispatch(loadSeller());
   }, []);
 
   return (
@@ -55,6 +57,16 @@ const App = () => {
                 </ProtectedRoute>
               }
             />
+            <Route
+            path="/dashboard"
+            element={
+              <ShopProtectedRoute>
+                <ShopDashboardPage />
+              </ShopProtectedRoute>
+            }
+          />
+          <Route path="/shop-login" element={<ShopLoginPage />} />
+          <Route path="/shop-create" element={<ShopCreate />} />
           </Routes>
           <ToastContainer
             position="bottom-center"

@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { productData, categoriesData } from "../../static/data";
 import {
   AiOutlineHeart,
+  AiOutlineMenu,
   AiOutlineSearch,
   AiOutlineShoppingCart,
 } from "react-icons/ai";
@@ -16,6 +17,7 @@ import {useSelector} from 'react-redux';
 import { local_server } from "../../server";
 import Cart from '../Cart/Cart';
 import WishList from '../WishList/WishList';
+import { RxCross1 } from "react-icons/rx";
 
 const Header = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -24,6 +26,7 @@ const Header = () => {
   const [dropDown, setDropDown] = useState(false);
   const [openCart, setOpenCart]=useState(false);
   const [openWishList, setOpenWishList]=useState(false);
+  const [open, setOpen]=useState(false);
 
   const {isAuthenticated, user}=useSelector((state)=>state.user);
   console.log(isAuthenticated);
@@ -87,7 +90,7 @@ const Header = () => {
           </div>
 
           <div className={`${styles.button}`}>
-            <Link to="/sellar">
+            <Link to="/shop-create">
               <h1 className="text-[#fff] flex items-center">
                 Become Sellar <IoIosArrowForward className="ml-1" />
               </h1>
@@ -176,6 +179,107 @@ const Header = () => {
             }
           </div>
         </div>
+      </div>
+
+
+      <div className="w-full h-[50px] sticky top-0 left-0 bg-[#fff] shadow-sm z-10 800px:hidden">
+        <div className="w-full flex items-center justify-between h-full">
+          <div>
+            <AiOutlineMenu
+              size={40}
+              className="ml-4 cursor-pointer"
+              onClick={() => setOpen(true)}
+            />
+          </div>
+          <div>
+            <Link to="/">
+              <img
+                src="https://shopo.quomodothemes.website/assets/images/logo.svg"
+                alt=""
+              />
+            </Link>
+          </div>
+          <div className="relative cursor-pointer mr-[15px] flex items-center">
+          {isAuthenticated ? (
+                  <Link to="/profile">
+                    <img
+                      src={`${local_server}${user.avatar}`}
+                      alt=""
+                      className="w-[30px] h-[30px] rounded-full"
+                    />
+                  </Link>
+                ) : (
+                  <Link to="/login">
+                    <CgProfile className="" size={30} />
+                  </Link>
+                )}
+            <AiOutlineShoppingCart className="" size={30} />
+            <span className="bg-[#3bc177] rounded-full h-4 w-4 text-[12px] absolute top-0 right-0 leading-tight text-center text-white font-mono">
+              0
+            </span>
+          </div>
+        </div>
+
+        {open && (
+          <div className="w-full h-full bf-[#0000005f] fixed left-0 top-0">
+            <div className="bg-white w-[60%] h-screen fixed top-0 left-0 p-2 overflow-y-scroll">
+              <div className="flex items-center justify-between">
+                <div className="relative cursor-pointer mr-[15px]">
+                  <AiOutlineHeart size={30} />
+                  <span className="bg-[#3bc177] rounded-full h-4 w-4 text-[12px] absolute top-0 right-0 leading-tight text-center text-white font-mono">
+                    0
+                  </span>
+                </div>
+                <RxCross1
+                  size={20}
+                  className="cursor-pointer"
+                  onClick={() => setOpen(false)}
+                />
+              </div>
+              <div className="w-[100%] relative mt-[20px]">
+                <input
+                  type="text"
+                  placeholder="Search here..."
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                  className="h-[40px] w-full px-2 border-[#3957db] border-[2px] rounded-md"
+                />
+                <AiOutlineSearch
+                  className="absolute right-2 top-1.5 cursor-pointer"
+                  size={30}
+                />
+                {searchData && searchData.length !== 0 ? (
+                  <div className="absolute min-h-[30vh] bg-slate-50 shadow-sm-2 z-[9] p-4">
+                    {searchData.map((product, i) => {
+                      return (
+                        <Link to={`/product/${product._id}`}>
+                          <div className="w-full flex mt-[20px]">
+                            <img
+                              src={product.image_Url[0].url}
+                              alt=""
+                              className="w-[40px] h-[40px] mr-[20px]"
+                            />
+                            <h1>{product.name.slice(0, 40)}...</h1>
+                          </div>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                ) : null}
+              </div>
+              <div>
+              <Navbar />
+              </div>
+              <div className='bg-white border border-black border-1 py-2 w-fit px-4 rounded-sm mt-4'>
+                <Link to="/shop-create">
+                  <h1 className="flex items-center">
+                    Become Sellar <IoIosArrowForward className="ml-1" />
+                  </h1>
+                </Link>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </>
   );
