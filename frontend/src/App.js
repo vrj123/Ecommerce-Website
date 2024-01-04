@@ -21,11 +21,12 @@ import { loadUser } from "./redux/actions/user";
 import store from "./redux/store";
 import { useSelector } from "react-redux";
 import ShopProtectedRoute from "./ProtectedRoutes/ShopProtectedRoute";
-import { ShopAllEvents, ShopCreateEvent, ShopDashboardPage, ShopLoginPage } from "./ShopRoutes";
+import { ShopAllCoupons, ShopAllEvents, ShopCreateEvent, ShopDashboardPage, ShopLoginPage } from "./ShopRoutes";
 import { loadSeller } from "./redux/actions/seller";
 import ShopCreateProduct from "./components/Shop/ShopCreateProduct";
 import ShopAllProducts from "./components/Shop/ShopAllProducts";
 import ShopActivationPage from "./pages/ShopActivationPage";
+import { getAllProducts } from "./redux/actions/product";
 // import ShopDashboardPage from './pages/Shop/ShopDashboardPage';
 
 const App = () => {
@@ -34,6 +35,7 @@ const App = () => {
   useEffect(() => {
     store.dispatch(loadUser());
     store.dispatch(loadSeller());
+    store.dispatch(getAllProducts());
   }, []);
 
   return (
@@ -102,6 +104,14 @@ const App = () => {
             element={
               <ShopProtectedRoute>
                 <ShopAllEvents />
+              </ShopProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard-coupons"
+            element={
+              <ShopProtectedRoute>
+                <ShopAllCoupons />
               </ShopProtectedRoute>
             }
           />
