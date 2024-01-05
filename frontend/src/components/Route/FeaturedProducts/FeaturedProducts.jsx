@@ -6,10 +6,9 @@ import ProductCard from '../ProductCard/ProductCard';
 
 const FeaturedProducts = () => {
   const { allProducts } = useSelector((state) => state.product);
-  console.log(allProducts);
 
   return (
-    <div className={`${styles.section}`}>
+    <div className={`${styles.section} mb-12`}>
       <div className={`${styles.heading}`}>
         <h1>Featured Products</h1>
       </div>

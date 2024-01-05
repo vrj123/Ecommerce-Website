@@ -1,20 +1,30 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import Footer from '../components/Layout/Footer';
 import Header from '../components/Layout/Header';
 import ProductDetail from '../components/Product/ProductDetail';
 import { productData } from '../static/data';
 import SuggestedProduct from '../components/Product/SuggestedProduct';
+import { useSelector } from 'react-redux';
 
 const ProductDetailsPage = () => {
-    const {name}=useParams();
-    const [data, setData]=useState(null);
-    const product_name=name.replace(/-/g, " ");
+  const {id}=useParams();
+  const [data, setData]=useState(null);
+  const {allProducts}=useSelector((state)=>state.product);
+  const [searchParams] = useSearchParams();
+  const eventData = searchParams.get("isEvent");
+  const {allEvents}=useSelector((state)=>state.event);
 
-    useEffect(()=>{
-        const d=productData.find((i)=>i.name===product_name);
-        setData(d);
-    }, [product_name])
+  useEffect(()=>{
+    if(eventData){
+      const d=allEvents?.find((i)=>i._id===id)
+      setData(d);
+    }
+    else{
+      const d=allProducts?.find((i)=>i._id===id);
+      setData(d);
+    }
+  }, [id, allProducts])
   return (
     <div>
         <Header/>

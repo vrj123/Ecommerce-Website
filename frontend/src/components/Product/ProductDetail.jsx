@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { addToCart } from "../../redux/actions/cart";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
+import { local_server } from "../../server";
 
 const ProductDetail = ({ data }) => {
   const [count, setCount] = useState(1);
@@ -49,35 +50,27 @@ const ProductDetail = ({ data }) => {
             <div className="w-full 800px:flex block">
               <div className="w-full 800px:w-[50%]">
                 <img
-                  src={data.image_Url[select].url}
+                  src={`${local_server}${data.images[select]}`}
                   alt=""
                   className="w-[80%]"
                 />
-                <div className="w-full flex">
-                  <div
-                    className={`cursor-pointer ${
-                      select === 0 ? "border" : "null"
-                    }`}
-                  >
-                    <img
-                      src={data.image_Url[0].url}
-                      alt=""
-                      className="h-[200px]"
-                      onClick={() => setSelect(0)}
-                    />
-                  </div>
-                  <div
-                    className={`cursor-pointer ${
-                      select === 1 ? "border" : "null"
-                    }`}
-                  >
-                    <img
-                      src={data.image_Url[1].url}
-                      alt=""
-                      className="h-[150px]"
-                      onClick={() => setSelect(1)}
-                    />
-                  </div>
+                <div className="w-full flex mt-6">
+                  {data.images &&
+                    data.images.map((image, index) => (
+                      <div
+                        className={`cursor-pointer ${
+                          select === index ? "border" : "null"
+                        }`}
+                        key={index}
+                      >
+                        <img
+                          src={`${local_server}${image}`}
+                          alt="Product"
+                          className="h-[150px] md:h-[200px]"
+                          onClick={() => setSelect(index)}
+                        />
+                      </div>
+                    ))}
                 </div>
               </div>
               <div className="w-full 800px:w-[50%] pt-5">
@@ -85,10 +78,10 @@ const ProductDetail = ({ data }) => {
                 <p>{data.description}</p>
                 <div className="flex pt-3">
                   <h4 className={`${styles.discount_price}`}>
-                    {data.discount_price}$
+                    {data.discountPrice}$
                   </h4>
                   <h3 className={`${styles.price}`}>
-                    {data.price ? data.price + "$" : null}
+                  {data.originalPrice ? data.originalPrice + "$" : null}
                   </h3>
                 </div>
                 <div className="flex pt-12">
@@ -117,7 +110,7 @@ const ProductDetail = ({ data }) => {
                 <div className="flex items-center gap-[20px]">
                   <div className="flex items-center mt-[10px]">
                     <img
-                      src={data.shop.shop_avatar.url}
+                      src={`${local_server}${data.shop.avatar}`}
                       className="w-[50px] h-[50px] rounded-full mr-2"
                     />
                     <div>
@@ -151,6 +144,7 @@ const ProductDetail = ({ data }) => {
 
 const ProDetailsInfo = ({data}) => {
   const [active, setActive] = useState(1);
+  const { products } = useSelector((state) => state.product);
 
   return (
     <div className="bg-[#f5f6fb] px-3 800px:px-10px py-2 rounded">
@@ -193,43 +187,7 @@ const ProDetailsInfo = ({data}) => {
       {active === 1 ? (
         <>
           <p className="py-2 text-[18px] leading-8 pb-10 whitespace-pre-line">
-            Product details are a crucial part of any eCommerce website or
-            online marketplace. These details help the potential customers to
-            make an informed decision about the product they are interested in
-            buying. A well-written product description can also be a powerful
-            marketing tool that can help to increase sales.Product details
-            typically include information about the product's features,
-            specifications, dimensions, weight, materials, and other relevant
-            information that can help customers to understand the product
-            better. The product details section should also include high-quality
-            images and videos of the product, as well as customer reviews and
-            ratings.
-          </p>
-          <p className="py-2 text-[18px] leading-8 pb-10 whitespace-pre-line">
-            Product details are a crucial part of any eCommerce website or
-            online marketplace. These details help the potential customers to
-            make an informed decision about the product they are interested in
-            buying. A well-written product description can also be a powerful
-            marketing tool that can help to increase sales.Product details
-            typically include information about the product's features,
-            specifications, dimensions, weight, materials, and other relevant
-            information that can help customers to understand the product
-            better. The product details section should also include high-quality
-            images and videos of the product, as well as customer reviews and
-            ratings.
-          </p>
-          <p className="py-2 text-[18px] leading-8 pb-10 whitespace-pre-line">
-            Product details are a crucial part of any eCommerce website or
-            online marketplace. These details help the potential customers to
-            make an informed decision about the product they are interested in
-            buying. A well-written product description can also be a powerful
-            marketing tool that can help to increase sales.Product details
-            typically include information about the product's features,
-            specifications, dimensions, weight, materials, and other relevant
-            information that can help customers to understand the product
-            better. The product details section should also include high-quality
-            images and videos of the product, as well as customer reviews and
-            ratings.
+            {data.description}
           </p>
         </>
       ) : null}
@@ -247,7 +205,7 @@ const ProDetailsInfo = ({data}) => {
           <div className="w-full block 800px:flex p-5">
             <div className="800px:w-[50%]">
               <div className="flex items-center gap-[10px]">
-                <img src={data.shop.shop_avatar.url} alt="" className="w-[50px] h-[50px] rounded-full" />
+                <img src={`${local_server}${data.shop.avatar}`} alt="" className="w-[50px] h-[50px] rounded-full" />
                 <div>
                 <h3 className={`${styles.shop_name}`}>
                         {data.shop.name}
@@ -257,20 +215,20 @@ const ProDetailsInfo = ({data}) => {
                       </h5>
                 </div>
               </div>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus aut accusantium doloremque. Molestiae placeat fuga porro deleniti distinctio voluptate consequuntur corporis nisi repudiandae nam iste odio qui nobis quam consectetur esse vero, iure sunt error. Aut minus fugit ab reprehenderit quisquam maiores sunt quasi neque voluptatibus consequatur repellat possimus, reiciendis molestias eaque iure odit harum sint dolorem consectetur accusamus nihil deleniti. Ullam fugit odit earum provident molestias quis aliquam totam!</p>
+              <p>{data.shop.description}</p>
             </div>
             <div className="800px:w-[50%] mt-5 800px:mt-0 800px:flex flex-col items-end">
               <div className="text-left">
                 <h5 className="font-[600]">
-                  Joined on: <span className="font-[500]">14 March 2024</span>
+                  Joined on:{" "} <span className="font-[500]">{data.createAt.slice(0, 10)}</span>
                 </h5>
                 <h5 className="font-[600] pt-3">
-                  Total Products: <span className="font-[500]">1,993</span>
+                  Total Products:{" "} <span className="font-[500]">{products && products.length}</span>
                 </h5>
                 <h5 className="font-[600] pt-3">
                   Joined Reviews: <span className="font-[500]">200</span>
                 </h5>
-                <Link to='/'>
+                <Link to={`/shop/preview/${data.shop._id}`}>
                   <div className={`${styles.button} text-[#fff] font-semibold !rounded-[4px] mt-3`}>
                     <h4>Visit Shop</h4>
                   </div>
