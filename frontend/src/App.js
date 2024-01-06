@@ -27,6 +27,7 @@ import ShopCreateProduct from "./components/Shop/ShopCreateProduct";
 import ShopAllProducts from "./components/Shop/ShopAllProducts";
 import ShopActivationPage from "./pages/ShopActivationPage";
 import { getAllProducts } from "./redux/actions/product";
+import { getAllEvents } from "./redux/actions/event";
 // import ShopDashboardPage from './pages/Shop/ShopDashboardPage';
 
 const App = () => {
@@ -36,6 +37,7 @@ const App = () => {
     store.dispatch(loadUser());
     store.dispatch(loadSeller());
     store.dispatch(getAllProducts());
+    store.dispatch(getAllEvents());
   }, []);
 
   return (

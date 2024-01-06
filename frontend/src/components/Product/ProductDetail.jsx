@@ -52,7 +52,7 @@ const ProductDetail = ({ data }) => {
                 <img
                   src={`${local_server}${data.images[select]}`}
                   alt=""
-                  className="w-[80%]"
+                  className="w-[80%] sm:h-[500px] mx-auto 1000px:mx-0 object-contain"
                 />
                 <div className="w-full flex mt-6">
                   {data.images &&
@@ -100,19 +100,21 @@ const ProductDetail = ({ data }) => {
                   </button>
                 </div>
                 <div
-                  className={`${styles.button} bg-[#000] mt-8 rounded-[4px] h-[11]`}
+                  className={`${styles.button} bg-[#000] mt-8 !rounded-sm h-[11]`}
                   onClick={() => addToCartHandler(data._id)}
                 >
                   <span className="text-white flex items-center">
                     Add to cart <AiOutlineShoppingCart className="ml-1" />
                   </span>
                 </div>
-                <div className="flex items-center gap-[20px]">
+                <div className="flex items-center gap-[20px] mt-[50px]">
                   <div className="flex items-center mt-[10px]">
-                    <img
-                      src={`${local_server}${data.shop.avatar}`}
-                      className="w-[50px] h-[50px] rounded-full mr-2"
-                    />
+                  <Link to={`/shop/preview/${data.shop._id}`}>
+                      <img
+                        src={`${local_server}${data.shop.avatar}`}
+                        className="w-[50px] h-[50px] rounded-full mr-2"
+                      />
+                    </Link>
                     <div>
                       <h3 className={`${styles.shop_name}`}>
                         {data.shop.name}
@@ -123,7 +125,7 @@ const ProductDetail = ({ data }) => {
                     </div>
                   </div>
                   <div
-                    className={`${styles.button} mt-4 rounded-[3px] h-[11] bg-[#6443d1]`}
+                    className={`${styles.button} mt-4 !rounded-sm h-[11] bg-[#6443d1]`}
                     onClick={handleSubmit}
                   >
                     <span className="text-white flex items-center">
