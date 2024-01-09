@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AiOutlineCamera } from "react-icons/ai";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { local_server } from "../../server";
 import styles from "../../styles/styles";
 import { Link } from "react-router-dom";
@@ -8,19 +8,56 @@ import { AiOutlineArrowRight, AiOutlineDelete } from "react-icons/ai";
 import {Button} from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import {MdOutlineTrackChanges} from 'react-icons/md';
+import {toast} from 'react-toastify';
+import axios from 'axios';
+import {server} from '../../server';
+import { loadUser, updateUserInformation } from "../../redux/actions/user";
 
 const ProfileContent = ({ active }) => {
-  const { user } = useSelector((state) => state.user);
+  const { user, error } =
+    useSelector((state) => state.user);
   const [name, setName] = useState(user && user.name);
   const [email, setEmail]=useState(user && user.email);
-  const [phoneNumber, setPhoneNumber]=useState("");
-  const [zipCode, setZipCode]=useState("");
-  const [address1, setAddress1]=useState();
-  const [address2, setAddress2]=useState();
+  const [phoneNumber, setPhoneNumber]=useState(user && user.phoneNumber);
+  const [password, setPassword]=useState();
+  const dispatch = useDispatch();
+  console.log(name);
 
-  const handleSubmit=(e)=>{
-      e.preventDefault();
-  }
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      dispatch({ type: "cleanError" });
+    }
+  }, [error]);
+
+  const handleImageChange = (e) => {
+    const image = e.target.files[0];
+
+    axios
+      .put(
+        `${server}/user/update-avatar`,
+        { image },
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          withCredentials: true,
+        }
+      )
+      .then((res) => {
+        dispatch(loadUser());
+        // window.location.reload();
+        // setAvatar(res.data.user.avatar);
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(updateUserInformation(email, phoneNumber, password, name));
+  };
 
   return (
     <div className="w-full">
@@ -33,13 +70,21 @@ const ProfileContent = ({ active }) => {
                 alt=""
                 className="w-[150px] h-[150px] rounded-full object-cover border-[3px] border-[#3ad132]"
               />
-              <div>
-                <AiOutlineCamera className="absolute w-[30px] h-[30px] rounded-full right-4 bottom-4 bg-[#E3E9EE] flex items-center justify-center" />
+              <div className="absolute w-[30px] h-[30px] rounded-full right-4 bottom-4 bg-[#E3E9EE] flex items-center justify-center cursor-pointer">
+                <input
+                  type="file"
+                  id="image"
+                  className="hidden"
+                  onChange={(e)=>handleImageChange(e)}
+                />
+                <label htmlFor="image">
+                  <AiOutlineCamera />
+                </label>
               </div>
             </div>
           </div>
           <div className="w-full p-4">
-            <form action="" aria-required={true} onSubmit={handleSubmit}>
+            <form action="" aria-required={true} onSubmit={(e)=>handleSubmit(e)}>
               <div className="flex items-center flex-wrap gap-[2%]">
                 <div className="w-[100%] 800px:w-[48%] pb-4">
                   <label htmlFor="" className="text-gray-700 block pb-2">
@@ -76,35 +121,13 @@ const ProfileContent = ({ active }) => {
                 </div>
                 <div className="w-[100%] 800px:w-[48%] pb-4">
                   <label htmlFor="" className="text-gray-700 block pb-2">
-                    Zip Code
+                    Password
                   </label>
                   <input
-                    type="number"
+                    type="password"
                     className={`${styles.input} w-[95%]`}
-                    value={zipCode}
-                    onChange={(e) => setZipCode(e.target.value)}
-                  />
-                </div>
-                <div className="w-[100%] 800px:w-[48%] pb-4">
-                  <label htmlFor="" className="text-gray-700 block pb-2">
-                    Address 1
-                  </label>
-                  <input
-                    type="address"
-                    className={`${styles.input} w-[95%]`}
-                    value={address1}
-                    onChange={(e) => setAddress1(e.target.value)}
-                  />
-                </div>
-                <div className="w-[100%] 800px:w-[48%] pb-4">
-                  <label htmlFor="" className="text-gray-700 block pb-2">
-                    Address 2
-                  </label>
-                  <input
-                    type="address"
-                    className={`${styles.input} w-[95%]`}
-                    value={address2}
-                    onChange={(e) => setAddress2(e.target.value)}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
               </div>

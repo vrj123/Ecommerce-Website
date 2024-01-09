@@ -48,7 +48,7 @@ const EventCard = ({event}) => {
             <CountDown event={event}/>
         </div>
         <div className="mt-6 flex gap-[10px]">
-          <Link to={`/product/${event._id}?isEvent=true`} className={`${styles.button} text-white !w-[120px]`}>See details</Link>
+          <Link to={`/product/${event?._id}?isEvent=true`} className={`${styles.button} text-white !w-[120px]`}>See details</Link>
           <div className={`${styles.button} text-white`} onClick={()=>addToCartHandler(event._id)}>
             Add to cart
           </div>
