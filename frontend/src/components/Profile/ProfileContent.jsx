@@ -12,6 +12,7 @@ import {toast} from 'react-toastify';
 import axios from 'axios';
 import {server} from '../../server';
 import { loadUser, updateUserInformation } from "../../redux/actions/user";
+import { getAllUserOrders } from "../../redux/actions/order";
 
 const ProfileContent = ({ active }) => {
   const { user, error } =
@@ -168,18 +169,13 @@ const ProfileContent = ({ active }) => {
 
 const AllOrders=()=>{
 
-    const orders=[
-        {
-            _id:"sdlc",
-            orderItems:[
-                {
-                    name:"Iphone 14 pro max"
-                }
-            ],
-            totalPrice:140,
-            orderStatus:"Processing"
-        }
-    ];
+  const {user}=useSelector((state)=>state.user);
+  const {orders}=useSelector((state)=>state.order);
+  const dispatch=useDispatch();
+
+  useEffect(()=>{
+    dispatch(getAllUserOrders(user._id));
+  }, [user])
 
     const columns = [
         { field: "id", headerName: "Order ID", minWidth: 150, flex: 0.7 },

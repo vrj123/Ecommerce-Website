@@ -13,6 +13,7 @@ import {
   ProductDetailsPage,
   ProfilePage,
   ShopCreate,
+  ShopHomePage,
 } from "./Routes";
 import { ToastContainer } from "react-toastify";
 import ProtectedRoute from "./ProtectedRoutes/ProtectedRoute";
@@ -77,6 +78,14 @@ const App = () => {
         />
         <Route path="/shop-login" element={<ShopLoginPage />} />
         <Route path="/shop-create" element={<ShopCreate />} />
+        <Route
+            path={`/shop/:id`}
+            element={
+              <ShopProtectedRoute>
+                <ShopHomePage />
+              </ShopProtectedRoute>
+            }
+          />
         <Route
           path="/dashboard-create-product"
           element={
