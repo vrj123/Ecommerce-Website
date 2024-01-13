@@ -1,6 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Checkout from "./components/Checkout/Checkout";
 import {
   LoginPage,
   SignupPage,
@@ -14,6 +15,8 @@ import {
   ProfilePage,
   ShopCreate,
   ShopHomePage,
+  PaymentPage,
+  OrderSuccessPage
 } from "./Routes";
 import { ToastContainer } from "react-toastify";
 import ProtectedRoute from "./ProtectedRoutes/ProtectedRoute";
@@ -30,19 +33,43 @@ import ShopActivationPage from "./pages/ShopActivationPage";
 import { getAllProducts } from "./redux/actions/product";
 import { getAllEvents } from "./redux/actions/event";
 // import ShopDashboardPage from './pages/Shop/ShopDashboardPage';
+import { Elements} from "@stripe/react-stripe-js";
+import {loadStripe} from '@stripe/stripe-js';
+import { server } from "./server";
+import axios from "axios";
 
 const App = () => {
-  const { loading } = useSelector((state) => state.user);
+  const [stripeApikey, setStripeApikey] = useState("");
+
+  const getStripeApiKey = async () => {
+    const { data } = await axios.get(`${server}/payment/stripeapikey`);
+    setStripeApikey(data.stripeApikey);
+  };
 
   useEffect(() => {
     store.dispatch(loadUser());
     store.dispatch(loadSeller());
     store.dispatch(getAllProducts());
     store.dispatch(getAllEvents());
+    getStripeApiKey();
   }, []);
 
   return (
     <BrowserRouter>
+    {stripeApikey && (
+          <Elements stripe={loadStripe(stripeApikey)}>
+            <Routes>
+              <Route
+                path="/payment"
+                element={
+                  <ProtectedRoute>
+                    <PaymentPage />
+                  </ProtectedRoute>
+                }
+              />
+            </Routes>
+          </Elements>
+        )}
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
@@ -68,6 +95,14 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+        <Route
+            path="/checkout"
+            element={
+              <ProtectedRoute>
+                <Checkout />
+              </ProtectedRoute>
+            }
+          />
         <Route
           path="/dashboard"
           element={
@@ -126,6 +161,7 @@ const App = () => {
               </ShopProtectedRoute>
             }
           />
+          <Route path='/order/success' element={<OrderSuccessPage/>}/>
       </Routes>
       <ToastContainer
         position="bottom-center"

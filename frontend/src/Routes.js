@@ -10,6 +10,8 @@ import ProductDetailsPage from "./pages/ProductDetailsPage";
 import ProfilePage from "./pages/ProfilePage";
 import ShopCreate from './components/Shop/ShopCreate';
 import ShopHomePage from './pages/ShopHomePage';
+import PaymentPage from './pages/PaymentPage';
+import OrderSuccessPage from './pages/OrderSuccessPage';
 
 export {
     LoginPage,
@@ -24,4 +26,6 @@ export {
     ProfilePage,
     ShopCreate,
     ShopHomePage,
+    PaymentPage,
+    OrderSuccessPage,
 }

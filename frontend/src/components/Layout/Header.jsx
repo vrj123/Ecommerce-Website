@@ -29,7 +29,10 @@ const Header = () => {
   const [open, setOpen]=useState(false);
 
   const {isAuthenticated, user}=useSelector((state)=>state.user);
-  console.log(isAuthenticated);
+  const {allProducts}=useSelector((state)=>state.product);
+  const {cart}=useSelector((state)=>state.cart);
+  const {wishlist}=useSelector((state)=>state.wishlist);
+
 
   const handleSearchChange = (e) => {
     const term = e.target.value;
@@ -137,7 +140,7 @@ const Header = () => {
               <div className="relative cursor-pointer mr-[15px]" onClick={()=>setOpenWishList(true)}>
                 <AiOutlineHeart className="text-white" size={30} />
                 <span className="bg-[#3bc177] rounded-full h-4 w-4 text-[12px] absolute top-0 right-0 leading-tight text-center text-white font-mono">
-                  0
+                  {wishlist.length}
                 </span>
               </div>
             </div>
@@ -146,7 +149,7 @@ const Header = () => {
               <div className="relative cursor-pointer mr-[15px]" onClick={()=>setOpenCart(true)}>
                 <AiOutlineShoppingCart className="text-white" size={30} />
                 <span className="bg-[#3bc177] rounded-full h-4 w-4 text-[12px] absolute top-0 right-0 leading-tight text-center text-white font-mono">
-                  0
+                  {cart.length}
                 </span>
               </div>
             </div>
