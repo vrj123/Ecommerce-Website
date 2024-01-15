@@ -16,7 +16,8 @@ import {
   ShopCreate,
   ShopHomePage,
   PaymentPage,
-  OrderSuccessPage
+  OrderSuccessPage,
+  OrderDetailsPage
 } from "./Routes";
 import { ToastContainer } from "react-toastify";
 import ProtectedRoute from "./ProtectedRoutes/ProtectedRoute";
@@ -95,6 +96,14 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+        <Route
+            path="/user/order/:id"
+            element={
+              <ProtectedRoute>
+                <OrderDetailsPage/>
+              </ProtectedRoute>
+            }
+          />
         <Route
             path="/checkout"
             element={

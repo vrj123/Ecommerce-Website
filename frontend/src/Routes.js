@@ -12,6 +12,7 @@ import ShopCreate from './components/Shop/ShopCreate';
 import ShopHomePage from './pages/ShopHomePage';
 import PaymentPage from './pages/PaymentPage';
 import OrderSuccessPage from './pages/OrderSuccessPage';
+import OrderDetailsPage from "./pages/OrderDetailsPage";
 
 export {
     LoginPage,
@@ -28,4 +29,5 @@ export {
     ShopHomePage,
     PaymentPage,
     OrderSuccessPage,
+    OrderDetailsPage,
 }
