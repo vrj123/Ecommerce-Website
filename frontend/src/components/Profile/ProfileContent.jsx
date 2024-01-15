@@ -255,18 +255,19 @@ const AllOrders=()=>{
 
 const AllRefundOrders=()=>{
 
-  const orders=[
-      {
-          _id:"sdlc",
-          orderItems:[
-              {
-                  name:"Iphone 14 pro max"
-              }
-          ],
-          totalPrice:140,
-          orderStatus:"Processing"
-      }
-  ];
+  const {user}=useSelector((state)=>state.user);
+  const {orders}=useSelector((state)=>state.order);
+  const dispatch=useDispatch();
+
+
+  useEffect(()=>{
+    dispatch(getAllUserOrders(user._id));
+  }, [user])
+
+
+  const eligibleOrders=orders && orders.filter((order)=>order.status==='Processing return' || order.status==='Refund success');
+  
+
 
   const columns = [
       { field: "id", headerName: "Order ID", minWidth: 150, flex: 0.7 },
@@ -321,12 +322,12 @@ const AllRefundOrders=()=>{
 
     const row=[];
 
-    orders && orders.forEach((item)=>{
+    eligibleOrders && eligibleOrders.forEach((item)=>{
         row.push({
           id: item._id,
-          itemsQty: item.orderItems.length,
+          itemsQty: item.cart.length,
           total: "US$ " + item.totalPrice,
-          status: item.orderStatus,
+          status: item.status,
         })
     })
 
