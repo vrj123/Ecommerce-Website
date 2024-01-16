@@ -216,4 +216,67 @@ router.put('/update-avatar', isAuthenticated, upload.single('image'), catchAsync
   }
 }))
 
+router.put('/update-user-password', isAuthenticated, catchAsyncErrors(async(req, res, next)=>{
+  try{
+    const user=await User.findById(req.user._id).select("+password");
+    const isPasswordCorrect=await user.comparePassword(req.body.oldPassword);
+    if(!isPasswordCorrect){
+      return next(new ErrorHandler("Please enter your old password correct", 400));
+    }
+    if(req.body.newPassword!==req.body.confirmPassword){
+      return next(new ErrorHandler('Your new password is not matching', 400));
+    }
+    if(req.body.newPassword===req.body.oldPassword){
+      return next(new ErrorHandler('New password cannot similar to old password', 400));
+    }
+    user.password=req.body.newPassword;
+    await user.save();
+    res.status(200).json({
+      success:true,
+      user,
+    })
+  }
+  catch(error){
+    return next(new ErrorHandler(error, 500));
+  }
+}))
+
+router.put('/update-user-addresses',isAuthenticated, catchAsyncErrors(async(req, res, next)=>{
+  try{
+    const user=await User.findById(req.user._id);
+
+   const newAddresses=user.addresses.filter((address)=> address.addressType!==req.body.addressType) || [];
+   console.log(newAddresses);
+    newAddresses.push(req.body);
+    user.addresses=[...newAddresses];
+    await user.save();
+    res.status(200).json({
+      success:true,
+      user
+    })
+    
+
+  }
+  catch(error){
+    console.log(error);
+    return next(new ErrorHandler(error, 500));
+  }
+}))
+
+
+router.delete('/delete-user-address/:id', isAuthenticated, catchAsyncErrors(async(req, res, next)=>{
+  try{
+    await User.updateOne({ _id:req.user._id}, {$pull:{addresses:{_id:req.params.id}}});
+    const user=await User.findById(req.user._id);
+    
+    res.status(200).json({
+      success:true,
+      user,
+    })
+  }
+  catch(error){
+    return next(new ErrorHandler(error, 500));
+  }
+}))
+
 module.exports = router;

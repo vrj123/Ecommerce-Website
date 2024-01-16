@@ -40,7 +40,8 @@ const Header = () => {
     const filteredProducts = productData.filter((product) => {
       return product.name.toLowerCase().includes(term.toLowerCase());
     });
-    setSearchData(filteredProducts);
+    if (term === "") setSearchData(null);
+    else setSearchData(filteredProducts);
   };
 
   window.addEventListener("scroll", () => {

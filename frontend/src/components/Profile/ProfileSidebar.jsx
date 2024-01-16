@@ -8,6 +8,7 @@ import {TbAddressBook, TbCodeAsterix} from 'react-icons/tb';
 import axios from 'axios';
 import {toast} from 'react-toastify';
 import {server} from '../../server';
+import {RiLockPasswordLine} from 'react-icons/ri';
 
 const ProfileSidebar = ({active, setActive}) => {
 
@@ -50,8 +51,8 @@ const ProfileSidebar = ({active, setActive}) => {
         </div>
         <div className={`flex items-center cursor-pointer w-full mb-8 text-${active===6?"[red]":null}`}
         onClick={()=>setActive(6)}>
-            <AiOutlineCreditCard/>
-            <span className='pl-3 hidden 800px:block'>Payment Methods</span>
+            <RiLockPasswordLine/>
+            <span className='pl-3 hidden 800px:block'>Change Password</span>
         </div>
         <div className={`flex items-center cursor-pointer w-full mb-8 text-${active===7?"[red]":null}`}
         onClick={()=>setActive(7)}>
