@@ -18,21 +18,36 @@ import { RxCross1 } from "react-icons/rx";
 
 
 const ProfileContent = ({ active }) => {
-  const { user, error } =
+  const { user, error, addressUpdateMessage, deleteUserAddressMessage  } =
     useSelector((state) => state.user);
   const [name, setName] = useState(user && user.name);
   const [email, setEmail]=useState(user && user.email);
   const [phoneNumber, setPhoneNumber]=useState(user && user.phoneNumber);
   const [password, setPassword]=useState();
   const dispatch = useDispatch();
-  console.log(name);
 
   useEffect(() => {
     if (error) {
       toast.error(error);
       dispatch({ type: "cleanError" });
     }
-  }, [error]);
+    if (addressUpdateMessage) {
+      toast.success(addressUpdateMessage);
+      dispatch({ type: "cleanAddressUpdateMessage" });
+    }
+    if (deleteUserAddressMessage) {
+      toast.success(deleteUserAddressMessage);
+      dispatch({
+        type: "cleanDeleteUserAddressMessage",
+      });
+    }
+  }, [error, addressUpdateMessage, deleteUserAddressMessage]);
+
+  useEffect(()=>{
+    setName(user?.name);
+    setEmail(user?.email);
+    setPhoneNumber(user?.phoneNumber);
+  }, [user])
 
   const handleImageChange = (e) => {
     const image = e.target.files[0];
@@ -179,6 +194,7 @@ const AllOrders=()=>{
   useEffect(()=>{
     dispatch(getAllUserOrders(user._id));
   }, [user])
+
 
     const columns = [
         { field: "id", headerName: "Order ID", minWidth: 150, flex: 0.7 },

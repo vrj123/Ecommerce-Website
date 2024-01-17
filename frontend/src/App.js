@@ -26,7 +26,7 @@ import { loadUser } from "./redux/actions/user";
 import store from "./redux/store";
 import { useSelector } from "react-redux";
 import ShopProtectedRoute from "./ProtectedRoutes/ShopProtectedRoute";
-import { ShopAllCoupons, ShopAllEvents, ShopCreateEvent, ShopDashboardPage, ShopLoginPage } from "./ShopRoutes";
+import { ShopAllCoupons, ShopAllEvents, ShopAllOrders, ShopCreateEvent, ShopDashboardPage, ShopLoginPage, ShopOrderDetails } from "./ShopRoutes";
 import { loadSeller } from "./redux/actions/seller";
 import ShopCreateProduct from "./components/Shop/ShopCreateProduct";
 import ShopAllProducts from "./components/Shop/ShopAllProducts";
@@ -167,6 +167,22 @@ const App = () => {
             element={
               <ShopProtectedRoute>
                 <ShopAllCoupons />
+              </ShopProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard-orders"
+            element={
+              <ShopProtectedRoute>
+                <ShopAllOrders/>
+              </ShopProtectedRoute>
+            }
+          />
+          <Route
+            path="/order/:id"
+            element={
+              <ShopProtectedRoute>
+                <ShopOrderDetails/>
               </ShopProtectedRoute>
             }
           />

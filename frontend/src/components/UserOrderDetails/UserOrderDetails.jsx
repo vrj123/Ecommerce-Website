@@ -45,6 +45,7 @@ const UserOrderDetails = () => {
     try{
       await axios.put(`${server}/order/return-order/${id}`, {status:"Processing return"});
       toast.success("Return succesfully");
+      dispatch(getAllUserOrders(user?.id));
     }
     catch(error){
       toast.error(error.response.data.message);
