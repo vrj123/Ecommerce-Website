@@ -10,6 +10,7 @@ const sendMail = require("../utils/sendMail");
 const sendShopToken=require('../utils/shop_token');
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const {isSeller} = require('../middleware/auth');
+const Product=require('../model/product');
 
 router.post("/create-shop", upload.single("file"), async (req, res, next) => {
   try {
@@ -194,6 +195,58 @@ router.get('/get-shop-info/:id', catchAsyncErrors(async(req, res, next)=>{
   }
   catch(error){
     return next(new ErrorHandler(error, 400));
+  }
+}))
+
+router.put('/update-shop-avatar', isSeller, upload.single('image'), catchAsyncErrors(async(req, res, next)=>{
+  try{
+    const shop=await Shop.findById(req.seller._id);
+    const avatarPath=`uploads/${shop.avatar}`;
+    // fs.unlinkSync(avatarPath);
+    const filePath=path.join(req.file.filename);
+    shop.avatar=filePath;
+    await shop.save();
+    res.status(200).json({
+      success:true,
+      shop
+    })
+  }
+  catch(error){
+    return next(new ErrorHandler(error, 500));
+  }
+}))
+
+
+router.put('/update-shop-info', isSeller, catchAsyncErrors(async(req, res, next)=>{
+  try{
+    const shop=await Shop.findById(req.seller._id);
+    if(!shop){
+      return next(new ErrorHandler("No shop found", 400));
+    }
+    const {name, zipCode, phoneNumber, address, description}=req.body;
+    shop.name=name!==""?name:shop.name;
+    shop.zipCode=zipCode!==null?zipCode:shop.zipCode;
+    shop.phoneNumber=phoneNumber!==null?phoneNumber:shop.phoneNumber;
+    shop.address=address!==""?address:shop.address;
+    shop.description=description!==""?description:shop.description;
+
+    await shop.save();
+
+    const products=await Product.find({shopId:req.seller._id});
+    if (products && products.length > 0) {
+      for (const product of products) {
+        product.shop = shop;
+        await product.save();
+      }
+    }
+
+    res.status(200).json({
+      success:true,
+      shop
+    })
+  }
+  catch(error){
+    return next(new ErrorHandler(error, 500));
   }
 }))
 

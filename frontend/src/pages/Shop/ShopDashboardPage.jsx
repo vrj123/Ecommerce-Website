@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import DashboardHero from "../../components/Shop/DashboardHero";
 import DashboardHeader from "../../components/Shop/Layout/DashboardHeader";
 import DashboardSidebar from "../../components/Shop/Layout/DashboardSidebar";
 
@@ -11,6 +12,7 @@ const ShopDashboardPage = () => {
         <div className="w-[80px] 800px:w-[330px]">
           <DashboardSidebar active={active} />
         </div>
+        <DashboardHero/>
       </div>
     </div>
   );

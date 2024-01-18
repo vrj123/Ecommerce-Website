@@ -6,6 +6,9 @@ import ShopAllEvents from './components/Shop/ShopAllEvents';
 import ShopAllCoupons from './pages/Shop/ShopAllCoupons';
 import ShopAllOrders from './components/Shop/ShopAllOrders';
 import ShopOrderDetails from './components/Shop/ShopOrderDetails';
+import ShopAllRefund from './components/Shop/ShopAllRefund';
+import ShopSettingsPage from './pages/Shop/ShopSettingsPage';
+// import ShopDashboardPage from './pages/Shop/ShopDashboardPage';
 
 export {
     ShopDashboardPage,
@@ -16,4 +19,6 @@ export {
     ShopAllCoupons,
     ShopAllOrders,
     ShopOrderDetails,
+    ShopAllRefund,
+    ShopSettingsPage,
 }
