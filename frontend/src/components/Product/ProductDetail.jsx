@@ -7,6 +7,7 @@ import { addToCart } from "../../redux/actions/cart";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { local_server } from "../../server";
+import Ratings from "./Ratings";
 
 const ProductDetail = ({ data }) => {
   const [count, setCount] = useState(1);
@@ -15,6 +16,7 @@ const ProductDetail = ({ data }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { cart } = useSelector((state) => state.cart);
+  const {allProducts}=useSelector((state)=>state.product);
 
   const decrementCount = () => {
     if (count > 1) setCount(count - 1);
@@ -41,6 +43,12 @@ const ProductDetail = ({ data }) => {
       }
     }
   };
+
+  const shopProducts=allProducts && allProducts.filter((product)=>product.shopId===data?.shopId);
+  let totalReviews=shopProducts && shopProducts.reduce((acc, product)=>acc+product.reviews.length, 0);
+  const totalRatings=shopProducts && shopProducts.reduce((acc, product)=>acc+ product.reviews.reduce((sum, review)=>sum+review.rating, 0), 0);
+  const avg=totalRatings / totalReviews || 0;
+  const avgRating = avg.toFixed(2);
 
   return (
     <div className="bg-white">
@@ -120,7 +128,7 @@ const ProductDetail = ({ data }) => {
                         {data.shop.name}
                       </h3>
                       <h5 className="pb-3 text-[15px]">
-                        ({data.shop.ratings}) rating
+                        ({avgRating}) rating
                       </h5>
                     </div>
                   </div>
@@ -137,14 +145,14 @@ const ProductDetail = ({ data }) => {
             </div>
           </div>
 
-          <ProDetailsInfo data={data}/>
+          <ProDetailsInfo data={data} avgRating={avgRating}/>
         </div>
       ) : null}
     </div>
   );
 };
 
-const ProDetailsInfo = ({data}) => {
+const ProDetailsInfo = ({data, avgRating}) => {
   const [active, setActive] = useState(1);
   const { products } = useSelector((state) => state.product);
 
@@ -194,13 +202,23 @@ const ProDetailsInfo = ({data}) => {
         </>
       ) : null}
 
-      {
-        active===2?(
-          <p className="flex justify-center min-h-[40vh] items-center">
-            No Reviews Yet!
-          </p>
-        ):null
-      }
+      {active === 2 ? (
+        <p className="flex flex-col h-[40vh] overflow-y-scroll py-4">
+          {
+            data && data.reviews.map((review, index)=>(
+              <div key={index} className='flex items-center'>
+                <img src={`${local_server}${review.user.avatar}`} className='w-[50px] h-[50px] rounded-full' />
+                <div className="pl-2">
+                  <h1>{review.user.name}</h1>
+                  <Ratings rating={review.rating}/>
+                  <p className="font-[500]">{review.comment}</p>
+                  <p>{review.createdAt}</p>
+                </div>
+              </div>
+            )) 
+          }
+        </p>
+      ) : null}
 
       {
         active===3?(
@@ -213,7 +231,7 @@ const ProDetailsInfo = ({data}) => {
                         {data.shop.name}
                       </h3>
                       <h5 className="pb-3 text-[15px]">
-                        ({data.shop.ratings}) rating
+                        ({avgRating}) rating
                       </h5>
                 </div>
               </div>
