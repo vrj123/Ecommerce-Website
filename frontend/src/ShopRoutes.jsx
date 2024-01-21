@@ -9,6 +9,7 @@ import ShopOrderDetails from './components/Shop/ShopOrderDetails';
 import ShopAllRefund from './components/Shop/ShopAllRefund';
 import ShopSettingsPage from './pages/Shop/ShopSettingsPage';
 // import ShopDashboardPage from './pages/Shop/ShopDashboardPage';
+import ShopInboxPage from './pages/Shop/ShopInboxPage';
 
 export {
     ShopDashboardPage,
@@ -21,4 +22,5 @@ export {
     ShopOrderDetails,
     ShopAllRefund,
     ShopSettingsPage,
+    ShopInboxPage,
 }

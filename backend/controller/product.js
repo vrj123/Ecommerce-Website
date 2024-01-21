@@ -87,7 +87,8 @@ router.put('/create-new-review', catchAsyncErrors(async(req, res, next)=>{
             return next(new ErrorHandler('Product deleted from shop', 400));
         }
 
-        const isReviewed=product.reviews.find((review)=>review.user._id===user._id);
+
+        const isReviewed=product.reviews?.find((review)=>review.user._id===user._id);
 
         if(isReviewed){
             product.reviews.forEach((rev)=>{

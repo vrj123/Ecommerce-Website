@@ -35,6 +35,8 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
   const couponCode=require('./controller/couponCode');
   const payment=require('./controller/payment');
   const order=require('./controller/order');
+  const conversation=require('./controller/conversation');
+  const messages=require('./controller/messages');
 
   app.use('/api/v2/user', user);
   app.use('/api/v2/shop', shop);
@@ -43,6 +45,8 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
   app.use('/api/v2/coupon', couponCode);
   app.use('/api/v2/payment', payment);
   app.use('/api/v2/order', order);
+  app.use('/api/v2/conversation', conversation);
+  app.use('/api/v2/message', messages);
 
 
 // it is for error handling

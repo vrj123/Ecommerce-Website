@@ -279,4 +279,20 @@ router.delete('/delete-user-address/:id', isAuthenticated, catchAsyncErrors(asyn
   }
 }))
 
+router.get('/get-user/:id', catchAsyncErrors(async(req, res, next)=>{
+  try{
+    const user=await User.findById(req.params.id);
+    if(!user){
+      return next(new ErrorHandler("No user found", 400));
+    }
+    res.status(200).json({
+      success:true,
+      user
+    });
+  }
+  catch(error){
+    return next(new ErrorHandler(error, 500));
+  }
+}))
+
 module.exports = router;

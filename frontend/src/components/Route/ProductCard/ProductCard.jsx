@@ -14,6 +14,7 @@ import {addToWishlist, removeFromWishlist} from '../../../redux/actions/wishlist
 import {addToCart} from '../../../redux/actions/cart';
 import {local_server} from '../../../server';
 import {toast} from 'react-toastify';
+import Ratings from "../../Product/Ratings";
 
 const ProductCard = ({ data }) => {
   const [click, setClick] = useState(false);
@@ -84,26 +85,7 @@ const ProductCard = ({ data }) => {
                   : data.name}
               </h4>
               <div className="flex">
-                <AiFillStar
-                  className="cursor-pointer mr-2 text-[#F6BA00]"
-                  size={20}
-                />
-                <AiFillStar
-                  className="cursor-pointer mr-2 text-[#F6BA00]"
-                  size={20}
-                />
-                <AiFillStar
-                  className="cursor-pointer mr-2 text-[#F6BA00]"
-                  size={20}
-                />
-                <AiFillStar
-                  className="cursor-pointer mr-2 text-[#F6BA00]"
-                  size={20}
-                />
-                <AiFillStar
-                  className="cursor-pointer mr-2 text-[#F6BA00]"
-                  size={20}
-                />
+              <Ratings rating={data?.ratings}/>
               </div>
               <div className="flex justify-between py-2 flex-col">
                 <div className="flex">

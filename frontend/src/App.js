@@ -17,7 +17,8 @@ import {
   ShopHomePage,
   PaymentPage,
   OrderSuccessPage,
-  OrderDetailsPage
+  OrderDetailsPage,
+  UserInboxPage
 } from "./Routes";
 import { ToastContainer } from "react-toastify";
 import ProtectedRoute from "./ProtectedRoutes/ProtectedRoute";
@@ -26,7 +27,7 @@ import { loadUser } from "./redux/actions/user";
 import store from "./redux/store";
 import { useSelector } from "react-redux";
 import ShopProtectedRoute from "./ProtectedRoutes/ShopProtectedRoute";
-import { ShopAllCoupons, ShopAllEvents, ShopAllOrders, ShopCreateEvent, ShopDashboardPage, ShopLoginPage, ShopOrderDetails, ShopAllRefund, ShopSettingsPage } from "./ShopRoutes";
+import { ShopAllCoupons, ShopAllEvents, ShopAllOrders, ShopCreateEvent, ShopDashboardPage, ShopLoginPage, ShopOrderDetails, ShopAllRefund, ShopSettingsPage, ShopInboxPage } from "./ShopRoutes";
 import { loadSeller } from "./redux/actions/seller";
 import ShopCreateProduct from "./components/Shop/ShopCreateProduct";
 import ShopAllProducts from "./components/Shop/ShopAllProducts";
@@ -112,6 +113,22 @@ const App = () => {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/inbox/:id"
+            element={
+              <ProtectedRoute>
+                <UserInboxPage/>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/inbox"
+            element={
+              <ProtectedRoute>
+                <UserInboxPage/>
+              </ProtectedRoute>
+            }
+          />
         <Route
           path="/dashboard"
           element={
@@ -146,6 +163,14 @@ const App = () => {
             </ShopProtectedRoute>
           }
         />
+        <Route
+            path="/dashboard-messages"
+            element={
+              <ShopProtectedRoute>
+                <ShopInboxPage/>
+              </ShopProtectedRoute>
+            }
+          />
         <Route
           path="/dashboard-products"
           element={
