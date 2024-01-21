@@ -60,6 +60,17 @@ export const userReducer = createReducer(initialState, (builder) => {
     .addCase('cleanDeleteUserAddressMessage', (state)=>{
       state.deleteUserAddressMessage="";
     })
+    .addCase('getAdminUsersRequest', (state)=>{
+      state.isLoading=true;
+  })
+  .addCase('getAdminUsersSuccess', (state, action)=>{
+      state.isLoading=false;
+      state.AdminUsers=action.payload;
+  })
+  .addCase('getAdminUsersFail', (state, action)=>{
+      state.isLoading=false;
+      state.error=action.payload;
+  })
     .addCase("cleanError", (state) => {
       state.error = null;
     });

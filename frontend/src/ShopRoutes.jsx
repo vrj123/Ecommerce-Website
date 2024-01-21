@@ -10,6 +10,7 @@ import ShopAllRefund from './components/Shop/ShopAllRefund';
 import ShopSettingsPage from './pages/Shop/ShopSettingsPage';
 // import ShopDashboardPage from './pages/Shop/ShopDashboardPage';
 import ShopInboxPage from './pages/Shop/ShopInboxPage';
+import ShopWithdrawMoneyPage from './pages/Shop/ShopWithdrawMoneyPage';
 
 export {
     ShopDashboardPage,
@@ -23,4 +24,5 @@ export {
     ShopAllRefund,
     ShopSettingsPage,
     ShopInboxPage,
+    ShopWithdrawMoneyPage
 }

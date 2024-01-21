@@ -27,7 +27,7 @@ import { loadUser } from "./redux/actions/user";
 import store from "./redux/store";
 import { useSelector } from "react-redux";
 import ShopProtectedRoute from "./ProtectedRoutes/ShopProtectedRoute";
-import { ShopAllCoupons, ShopAllEvents, ShopAllOrders, ShopCreateEvent, ShopDashboardPage, ShopLoginPage, ShopOrderDetails, ShopAllRefund, ShopSettingsPage, ShopInboxPage } from "./ShopRoutes";
+import { ShopAllCoupons, ShopAllEvents, ShopAllOrders, ShopCreateEvent, ShopDashboardPage, ShopLoginPage, ShopOrderDetails, ShopAllRefund, ShopSettingsPage, ShopInboxPage, ShopWithdrawMoneyPage } from "./ShopRoutes";
 import { loadSeller } from "./redux/actions/seller";
 import ShopCreateProduct from "./components/Shop/ShopCreateProduct";
 import ShopAllProducts from "./components/Shop/ShopAllProducts";
@@ -39,6 +39,8 @@ import { Elements} from "@stripe/react-stripe-js";
 import {loadStripe} from '@stripe/stripe-js';
 import { server } from "./server";
 import axios from "axios";
+import { AdminDashboardEvents, AdminDashboardOrders, AdminDashboardPage, AdminDashboardProducts, AdminDashboardSellers, AdminDashboardUsers, AdminDashboardWithdraw } from "./AdminRoutes";
+import AdminProtectedRoute from "./ProtectedRoutes/AdminProtectedRoute";
 
 const App = () => {
   const [stripeApikey, setStripeApikey] = useState("");
@@ -212,6 +214,14 @@ const App = () => {
             }
           />
           <Route
+            path="/dashboard-withdraw-money"
+            element={
+              <ShopProtectedRoute>
+                <ShopWithdrawMoneyPage />
+              </ShopProtectedRoute>
+            }
+          />
+          <Route
             path="/dashboard-refunds"
             element={
               <ShopProtectedRoute>
@@ -228,6 +238,32 @@ const App = () => {
             }
           />
           <Route path='/order/success' element={<OrderSuccessPage/>}/>
+          <Route path="/admin/dashboard" element={<AdminProtectedRoute>
+            <AdminDashboardPage/>
+          </AdminProtectedRoute>}/>
+
+          <Route path="/admin-users" element={<AdminProtectedRoute>
+            <AdminDashboardUsers/>
+          </AdminProtectedRoute>}/>
+
+          <Route path="/admin-sellers" element={<AdminProtectedRoute>
+            <AdminDashboardSellers/>
+          </AdminProtectedRoute>}/>
+
+          <Route path="/admin-orders" element={<AdminProtectedRoute>
+            <AdminDashboardOrders/>
+          </AdminProtectedRoute>}/>
+
+          <Route path="/admin-products" element={<AdminProtectedRoute>
+            <AdminDashboardProducts/>
+          </AdminProtectedRoute>}/>
+
+          <Route path="/admin-events" element={<AdminProtectedRoute>
+            <AdminDashboardEvents/>
+          </AdminProtectedRoute>}/>
+          <Route path="/admin-withdraw-money" element={<AdminProtectedRoute>
+            <AdminDashboardWithdraw/>
+          </AdminProtectedRoute>}/>
       </Routes>
       <ToastContainer
         position="bottom-center"
