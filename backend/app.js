@@ -10,7 +10,7 @@ const path=require('path');
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-  origin:'https://ecommerce-website-8uam.vercel.app/',
+  origin:['https://ecommerce-website-8uam.vercel.app'],
   credentials:true,
 }));
 app.use('/', express.static(path.join(__dirname, './uploads')));
