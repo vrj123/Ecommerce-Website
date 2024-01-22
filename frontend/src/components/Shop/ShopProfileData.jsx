@@ -42,15 +42,6 @@ const ShopProfileData = ({ isOwner }) => {
               Running Events
             </h5>
           </div>
-          <div className="flex items-center" onClick={() => setActive(3)}>
-            <h5
-              className={`text-[20px] font-[600] ${
-                active === 3 ? "text-red-500" : "text-[#333]"
-              } cursor-pointer pr-[20px]`}
-            >
-              Shop Reviews
-            </h5>
-          </div>
         </div>
         {isOwner && (
           <div>
