@@ -36,6 +36,31 @@ const shopSchema = new mongoose.Schema({
     type:String,
     required:true
  },
+ withdrawMethods:{
+  type:Object,
+},
+balance:{
+  type:Number,
+},
+transactions:[
+  {
+  amount:{
+      type:Number,
+      required:true,
+  },
+  status:{
+      type:String,
+      default:"Processing",
+  },
+  createdAt:{
+      type:Date,
+      default:Date.now(),
+  },
+  updatedAt:{
+      type:Date,
+  }
+  }
+],
  zipCode:{
     type:Number,
     required:true

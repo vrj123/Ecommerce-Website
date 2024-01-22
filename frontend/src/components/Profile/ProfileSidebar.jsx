@@ -8,11 +8,13 @@ import {TbAddressBook, TbCodeAsterix} from 'react-icons/tb';
 import axios from 'axios';
 import {toast} from 'react-toastify';
 import {server} from '../../server';
-import {RiLockPasswordLine} from 'react-icons/ri';
+import {RiAdminLine, RiLockPasswordLine} from 'react-icons/ri';
+import { useSelector } from 'react-redux';
 
 const ProfileSidebar = ({active, setActive}) => {
 
     const navigate=useNavigate();
+    const {user}=useSelector((state)=>state.user);
 
     const handleLogout=()=>{
         axios.get(`${server}/user/logout`, {withCredentials:true}).then((res)=>{
@@ -59,6 +61,17 @@ const ProfileSidebar = ({active, setActive}) => {
             <TbAddressBook/>
             <span className='pl-3 hidden 800px:block'>Address</span>
         </div>
+        {user && user.role === "Admin" && (
+        <div
+          className={`flex items-center cursor-pointer w-full mb-8 text-${
+            active === 9 ? "[red]" : null
+          }`}
+          onClick={()=>navigate('/admin/dashboard')}
+        >
+          <RiAdminLine />
+          <span className="pl-3 hidden 800px:block">Admin Dashboard</span>
+        </div>
+      )}
         <div className={`flex items-center cursor-pointer w-full mb-8 text-${active===8?"[red]":null}`}
         onClick={()=>setActive(8) || handleLogout()}>
             <AiOutlineLogout/>

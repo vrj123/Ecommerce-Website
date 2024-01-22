@@ -9,7 +9,7 @@ const jwt=require('jsonwebtoken');
 const sendMail=require('../utils/sendMail');
 const sendToken=require('../utils/jwtToken');
 const catchAsyncErrors=require('../middleware/catchAsyncErrors');
-const {isAuthenticated} = require('../middleware/auth');
+const {isAuthenticated, isAdmin} = require('../middleware/auth');
 
 router.post("/create-user", upload.single("file"), async (req, res, next) => {
   try {
@@ -289,6 +289,37 @@ router.get('/get-user/:id', catchAsyncErrors(async(req, res, next)=>{
       success:true,
       user
     });
+  }
+  catch(error){
+    return next(new ErrorHandler(error, 500));
+  }
+}))
+
+router.get('/get-admin-all-users', isAuthenticated, isAdmin, catchAsyncErrors(async(req, res, next)=>{
+  try{
+    const users=await User.find().sort({createAt:-1});
+    res.status(200).json({
+      success:true,
+      users,
+    })
+  }
+  catch(error){
+    return next(new ErrorHandler(error, 500));
+  }
+}))
+
+
+router.delete('/delete-user/:id', isAuthenticated, isAdmin, catchAsyncErrors(async(req, res, next)=>{
+  try{
+    const user=await User.findById(req.params.id);
+    if(!user){
+      return next(new ErrorHandler("No user found", 400));
+    }
+    await User.findByIdAndDelete(req.params.id);
+    res.status(200).json({
+      success:true,
+      message:"User deleted successfully",
+    })
   }
   catch(error){
     return next(new ErrorHandler(error, 500));

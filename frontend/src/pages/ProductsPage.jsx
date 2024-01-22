@@ -27,18 +27,19 @@ const ProductsPage = () => {
     <>
       <Header />
       <div className={`${styles.section} mt-[40px] mb-12`}>
-        <div className="flex flex-wrap justify-center gap-[20px] md:grid md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-          {data &&
-            data.map((i, index) => {
-              return <ProductCard data={i} key={index} />;
-            })}
-        </div>
-        {data && data.length === 0 && (
+        {data && data.length === 0 ? (
           <div>
             <h1 className="font-bold text-[30px] text-center mb-[30px]">
               No products found
             </h1>
           </div>
+        ):(
+          <div className="flex flex-wrap justify-center gap-[20px] md:grid md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+          {data &&
+            data.map((i, index) => {
+              return <ProductCard data={i} key={index} />;
+            })}
+        </div>
         )}
       </div>
       <Footer />

@@ -5,7 +5,6 @@ import EventCard from './EventCard';
 
 const Events = () => {
   const { allEvents, isLoading } = useSelector((state) => state.event);
-  console.log(allEvents);
 
   return (
     <div className={`${styles.section} mb-12`}>
@@ -14,7 +13,7 @@ const Events = () => {
         </div>
         {isLoading ? (
         <div>Loading...</div>
-      ) : allEvents ? (
+      ) : allEvents && allEvents.length!==0 ? (
           <div className="w-full grid">
             <EventCard event={allEvents && allEvents[0]} />
           </div>

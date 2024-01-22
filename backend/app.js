@@ -37,6 +37,8 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
   const order=require('./controller/order');
   const conversation=require('./controller/conversation');
   const messages=require('./controller/messages');
+  const withdraw=require('./controller/withdraw');
+
 
   app.use('/api/v2/user', user);
   app.use('/api/v2/shop', shop);
@@ -47,6 +49,7 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
   app.use('/api/v2/order', order);
   app.use('/api/v2/conversation', conversation);
   app.use('/api/v2/message', messages);
+  app.use('/api/v2/withdraw', withdraw);
 
 
 // it is for error handling

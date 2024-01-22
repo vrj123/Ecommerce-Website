@@ -16,22 +16,12 @@ const DashboardHero = () => {
   const { seller } = useSelector((state) => state.seller);
   const { orders, isLoading } = useSelector((state) => state.order);
   const { products } = useSelector((state) => state.product);
-  const [deliveredOrders, setDeliveredOrders] = useState([]);
 
   useEffect(() => {
     dispatch(getAllShopOrders(seller._id));
     dispatch(getShopAllProducts(seller._id));
-
-    const orderData =
-      orders && orders.filter((order) => order.status === "Delivered");
-    setDeliveredOrders(orderData);
   }, [dispatch, seller._id]);
 
-  const totalEarning =
-    deliveredOrders &&
-    deliveredOrders.reduce((acc, item) => acc + item.totalPrice, 0);
-  const serviceCharge = totalEarning * 0.1;
-  const availableBalance = (totalEarning - serviceCharge).toFixed(2);
   const Orders=orders && [...orders];
   const latestOrders=Orders && Orders.sort((a, b)=>b.createdAt-a.createdAt).slice(0, 3);
 
@@ -117,7 +107,7 @@ const DashboardHero = () => {
             </h3>
           </div>
           <h5 className="pt-4 text-[22px] font-[600] pl-8">
-            ${availableBalance || 0}
+            ${seller?.balance || 0}
           </h5>
           <Link to="/dashboard-withdraw-money">
             <h5 className="pl-4 pt-2 text-[#077f9c]">Withdraw money</h5>

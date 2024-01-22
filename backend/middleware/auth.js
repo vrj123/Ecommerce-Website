@@ -32,3 +32,10 @@ exports.isSeller = catchAsyncErrors(async(req,res,next) => {
 
     next();
 });
+
+exports.isAdmin = catchAsyncErrors(async(req, res, next)=>{
+    if(req.user.role!=='Admin'){
+        return next(new ErrorHandler(`${req.user.role} don't have access to resource`));
+    }
+    next();
+})

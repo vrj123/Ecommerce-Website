@@ -9,7 +9,7 @@ const jwt = require("jsonwebtoken");
 const sendMail = require("../utils/sendMail");
 const sendShopToken=require('../utils/shop_token');
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
-const {isSeller} = require('../middleware/auth');
+const {isSeller, isAuthenticated, isAdmin} = require('../middleware/auth');
 const Product=require('../model/product');
 
 router.post("/create-shop", upload.single("file"), async (req, res, next) => {
@@ -243,6 +243,62 @@ router.put('/update-shop-info', isSeller, catchAsyncErrors(async(req, res, next)
     res.status(200).json({
       success:true,
       shop
+    })
+  }
+  catch(error){
+    return next(new ErrorHandler(error, 500));
+  }
+}))
+
+router.get('/get-admin-all-shops', isAuthenticated, isAdmin, catchAsyncErrors(async(req, res, next)=>{
+  try{
+    const sellers=await Shop.find().sort({createAt:-1});
+    res.status(200).json({
+      success:true,
+      sellers,
+    })
+  }
+  catch(error){
+    return next(new ErrorHandler(error, 500));
+  }
+}))
+
+router.delete('/delete-seller/:id', isAuthenticated, isAdmin, catchAsyncErrors(async(req, res, next)=>{
+  try{
+    const shop=await Shop.findById(req.params.id);
+    if(!shop){
+      return next(new ErrorHandler("No shop found", 400));
+    }
+    await Shop.findByIdAndDelete(req.params.id);
+    res.status(200).json({
+      success:true,
+      message:"Seller deleted successfully",
+    })
+  }
+  catch(error){
+    return next(new ErrorHandler(error, 500));
+  }
+}))
+
+router.put('/update-payment-methods', isSeller, catchAsyncErrors(async(req, res, next)=>{
+  try{
+    const shop=await Shop.findByIdAndUpdate(req.seller._id, {withdrawMethods:req.body}, {new:true});
+    res.status(200).json({
+      success:true,
+      shop
+    })
+  }
+  catch(error){
+    return next(new ErrorHandler(error, 500));
+  }
+}))
+
+router.delete('/delete-payment-method', isSeller, catchAsyncErrors(async(req, res, next)=>{
+  try{
+    const shop=await Shop.findByIdAndUpdate(req.seller._id, {withdrawMethods:null}, {new:true});
+    res.status(200).json({
+      success:true,
+      shop,
     })
   }
   catch(error){

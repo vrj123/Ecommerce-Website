@@ -3,7 +3,7 @@ const Order = require("../model/order");
 const router = express.Router();
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const ErrorHandler = require("../utils/ErrorHandler");
-const { isSeller } = require("../middleware/auth");
+const { isSeller, isAuthenticated, isAdmin } = require("../middleware/auth");
 const Product=require('../model/product');
 
 router.post(
@@ -190,5 +190,18 @@ router.put('/order-refund-success/:id', isSeller, catchAsyncErrors(async(req, re
   }
 }))
 
+
+router.get('/get-admin-all-orders', isAuthenticated, isAdmin, catchAsyncErrors(async(req, res, next)=>{
+  try{
+    const orders=await Order.find();
+    res.status(200).json({
+      success:true,
+      orders,
+    })
+  }
+  catch(error){
+    return next(new ErrorHandler(error, 500));
+  }
+}))
 
 module.exports = router;
