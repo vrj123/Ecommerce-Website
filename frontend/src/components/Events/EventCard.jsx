@@ -30,7 +30,7 @@ const EventCard = ({event}) => {
   return (
     <div className="w-full bg-white block rounded-lg p-2 lg:flex">
       <div className="w-full lg:w-[50%] m-auto">
-        <img src={`${local_server}${event?.images[0]}`} alt="" />
+        <img src={`${event?.images[0].url}`} alt="" />
       </div>
       <div className="w-full lg:w-[50%] flex flex-col justify-center">
         <h2 className={`${styles.productTitle}`}>Iphone14 pro max</h2>

@@ -154,9 +154,16 @@ const DashboardMessages = () => {
   }, [messages]);
 
   const handleImageUpload=(e)=>{
-      const file=e.target.files[0];
-      setImages(file);
-      imageSendingHandler(file);
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setImages(reader.result);
+        imageSendingHandler(reader.result);
+      }
+    };
+
+    reader.readAsDataURL(e.target.files[0]);
   }
 
   const imageSendingHandler=(image)=>{
@@ -182,8 +189,8 @@ const DashboardMessages = () => {
       images:image
     })
     try{
-      const config = { header: { "Content-Type": "multipart/form-data" } };
-      axios.post(`${server}/message/create-new-message`, newForm, config).then((res)=>{
+      // const config = { header: { "Content-Type": "multipart/form-data" } };
+      axios.post(`${server}/message/create-new-message`, newForm).then((res)=>{
         setImages(null);
         setMessages([...messages, message]);
         updateLastMessageForImage();
@@ -291,7 +298,7 @@ const MessageList = ({
     >
       <div className="relative">
         <img
-          src={`${local_server}${user?.avatar}`}
+          src={`${user?.avatar?.url}`}
           alt=""
           className="w-[50px] h-[50px] rounded-full"
         />
@@ -333,7 +340,7 @@ const SellerInbox = ({
       <div className="w-full flex p-3 items-center justify-between bg-slate-200">
         <div className="flex">
           <img
-            src={`${local_server}${userData?.avatar}`}
+            src={`${userData?.avatar?.url}`}
             alt=""
             className="w-[60px] h-[60px] rounded-full"
           />
@@ -361,7 +368,7 @@ const SellerInbox = ({
             >
               {item.sender !== sellerId && (
                 <img
-                  src={`${local_server}${userData?.avatar}`}
+                  src={`${userData?.avatar?.url}`}
                   className="w-[40px] h-[40px] rounded-full mr-3"
                   alt=""
                 />
@@ -374,7 +381,7 @@ const SellerInbox = ({
                 >
                   {
                     item.text===""?(
-                      <img src={`${local_server}${item.images}`} alt="" className="h-[150px] w-[150px]"/>
+                      <img src={`${item?.images?.url}`} alt="" className="h-[150px] w-[150px]"/>
                     ):(
                       <p>{item.text}</p>
                     )

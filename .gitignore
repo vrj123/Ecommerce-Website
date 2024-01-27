@@ -2,6 +2,7 @@
 socket/node_modules
 socket/.env
 backend/config/.env
+backend/node_modules
 
 npm-debug.log*
 yarn-debug.log*

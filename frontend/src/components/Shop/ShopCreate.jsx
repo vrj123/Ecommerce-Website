@@ -34,7 +34,7 @@ const ShopCreate = () => {
     const config = { header: { "Content-Type": "multipart/fprm-data" } };
     const newForm = new FormData();
 
-    newForm.append("file", avatar);
+    newForm.append("avatar", avatar);
     newForm.append("name", name);
     newForm.append("email", email);
     newForm.append("password", password);
@@ -43,7 +43,7 @@ const ShopCreate = () => {
     newForm.append("address", address);
 
     axios
-      .post(`${server}/shop/create-shop`, newForm, config)
+      .post(`${server}/shop/create-shop`, newForm)
       .then((res) => {
         toast.success(res.data.message);
         setName("");
@@ -61,8 +61,15 @@ const ShopCreate = () => {
   }
 
   const handleFileInputChange=(e)=>{
-    const file = e.target.files[0];
-    setAvatar(file);
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setAvatar(reader.result);
+      }
+    };
+
+    reader.readAsDataURL(e.target.files[0]);
   }
 
   return (
@@ -200,7 +207,7 @@ const ShopCreate = () => {
                 <span className="inline-block h-8 w-8 rounded-full overflow-hidden">
                   {avatar ? (
                     <img
-                      src={URL.createObjectURL(avatar)}
+                      src={avatar}
                       alt="avatar"
                       className="h-full w-full object-cover rounded-full"
                     />

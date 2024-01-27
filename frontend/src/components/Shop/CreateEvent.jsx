@@ -57,8 +57,20 @@ const CreateEvent = () => {
   
 
     const handleImageChange=(e)=>{
-        const files=Array.from(e.target.files);
-        setImages((prevImages)=>[...prevImages, ...files]);
+      const files = Array.from(e.target.files);
+
+      setImages([]);
+  
+      files.forEach((file) => {
+        const reader = new FileReader();
+  
+        reader.onload = () => {
+          if (reader.readyState === 2) {
+            setImages((old) => [...old, reader.result]);
+          }
+        };
+        reader.readAsDataURL(file);
+      });
     }
 
     const handleSubmit=(e)=>{
@@ -234,7 +246,7 @@ const CreateEvent = () => {
           {
               images && (
                   images.map((i)=>(
-                      <img src={URL.createObjectURL(i)} alt="" key={i} className="w-[120px] h-[120px] object-cover m-2"/>
+                      <img src={i} alt="" key={i} className="w-[120px] h-[120px] object-cover m-2"/>
                   ))
               )
           }

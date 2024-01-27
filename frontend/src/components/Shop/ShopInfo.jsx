@@ -31,7 +31,6 @@ const ShopInfo = ({ isOwner }) => {
       window.location.reload();
     });
   };
-  console.log(allProducts);
 
   const shopProducts=allProducts && allProducts.filter((product)=>product.shopId===id);
   let totalReviews=shopProducts && shopProducts.reduce((acc, product)=>acc+product.reviews.length, 0);
@@ -49,7 +48,7 @@ const ShopInfo = ({ isOwner }) => {
           <div className="w-full py-5">
             <div className="w-full flex items-center justify-center">
               <img
-                src={`${local_server}${data?.avatar}`}
+                src={`${data?.avatar?.url}`}
                 alt=""
                 className="w-[150px] h-[150px] rounded-full"
               />

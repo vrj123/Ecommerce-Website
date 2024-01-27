@@ -53,11 +53,11 @@ const ProductDetails = ({ setOpen, data }) => {
             />
             <div className="block w-full 800px:flex gap-[20px]">
               <div className="w-full 800px:w-[50%] flex flex-col items-center">
-                <img src={`${local_server}${data.images && data.images[0]}`} className='w-[300px] h-[300px]'/>
+                <img src={`${data.images && data.images[0]?.url}`} className='w-[300px] h-[300px]'/>
                 <div className="self-start pl-6 mt-[10px]">
                 <div className="flex items-center">
                   <img
-                    src={`${local_server}${data?.shop?.avatar}`}
+                    src={`${data?.shop?.avatar?.url}`}
                     className="w-[50px] h-[50px] rounded-full mr-2 cursor-pointer"
                     onClick={()=>{
                       navigate(isSeller?`/shop/${data.shop._id}`:`/shop/preview/${data.shop._id}`);

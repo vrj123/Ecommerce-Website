@@ -5,37 +5,35 @@ const router = express.Router();
 const { upload } = require("../multer");
 const ErrorHandler = require("../utils/ErrorHandler");
 const fs = require("fs");
-const jwt=require('jsonwebtoken');
-const sendMail=require('../utils/sendMail');
-const sendToken=require('../utils/jwtToken');
-const catchAsyncErrors=require('../middleware/catchAsyncErrors');
-const {isAuthenticated, isAdmin} = require('../middleware/auth');
+const jwt = require("jsonwebtoken");
+const sendMail = require("../utils/sendMail");
+const sendToken = require("../utils/jwtToken");
+const cloudinary = require("cloudinary");
+const catchAsyncErrors = require("../middleware/catchAsyncErrors");
+const { isAuthenticated, isAdmin } = require("../middleware/auth");
 
-router.post("/create-user", upload.single("file"), async (req, res, next) => {
+router.post("/create-user", async (req, res, next) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, avatar } = req.body;
 
     const userEmail = await User.findOne({ email });
 
     if (userEmail) {
-      const filename = req.file.filename;
-      const filePath = `uploads/${filename}`;
-      fs.unlink(filePath, (err) => {
-        if (err) {
-          console.log(err);
-          res.status(500).json({ message: "Error deleteing file" });
-        }
-      });
       return next(new ErrorHandler("User already exists", 400));
     }
 
-    const filename = req.file.filename;
-    const fileUrl = path.join(filename);
+    const myCloud = await cloudinary.v2.uploader.upload(avatar, {
+      folder: "avatars",
+    });
+
     const user = {
       name: name,
       email: email,
       password: password,
-      avatar: fileUrl,
+      avatar: {
+        public_id: myCloud.public_id,
+        url: myCloud.secure_url,
+      },
     };
 
     const activationToken = createActivationToken(user);
@@ -130,42 +128,46 @@ router.post(
   })
 );
 
-
 // load user
-router.get('/getuser', isAuthenticated, catchAsyncErrors(async(req, res, next)=>{
-  try{
-    const user=await User.findById(req.user.id);
+router.get(
+  "/getuser",
+  isAuthenticated,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const user = await User.findById(req.user.id);
 
-    if(!user){
-      return next(new ErrorHandler("User doen't exists", 400));
+      if (!user) {
+        return next(new ErrorHandler("User doen't exists", 400));
+      }
+      res.status(200).json({
+        success: true,
+        user,
+      });
+    } catch (err) {
+      return next(new ErrorHandler(err.message, 500));
     }
-    res.status(200).json({
-      success:true,
-      user
-    })
-  }
-  catch(err){
-    return next(new ErrorHandler(err.message, 500));
-  }
-})
-)
+  })
+);
 
-router.get('/logout', isAuthenticated, catchAsyncErrors(async(req, res, next)=>{
-  try{
-    res.cookie("token", null, {
-      expires:new Date(Date.now()),
-      httpOnly:true
-    })
+router.get(
+  "/logout",
+  isAuthenticated,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      res.cookie("token", null, {
+        expires: new Date(Date.now()),
+        httpOnly: true,
+      });
 
-    res.status(200).json({
-      success:true,
-      message:"Logged out successfully"
-    })
-  }
-  catch(error){
-    return next(new ErrorHandler(err.message, 400));
-  }
-}))
+      res.status(200).json({
+        success: true,
+        message: "Logged out successfully",
+      });
+    } catch (error) {
+      return next(new ErrorHandler(err.message, 400));
+    }
+  })
+);
 
 router.put(
   "/update-user-info",
@@ -196,134 +198,171 @@ router.put(
   })
 );
 
-
-router.put('/update-avatar', isAuthenticated, upload.single('image'), catchAsyncErrors(async(req, res, next)=>{
-  try{
-    const existUser=await User.findById(req.user.id);
-    const existAvatarPath=`uploads/${existUser.avatar}`;
-    fs.unlinkSync(existAvatarPath);
-    const fileUrl=path.join(req.file.filename);
-    const user = await User.findByIdAndUpdate(req.user.id, {
-      avatar:fileUrl,
-    }, {new:true});
-    res.status(200).json({
-      success:true,
-      user,
-    })
-  }
-  catch(error){
-    return next(new ErrorHandler(error, 500));
-  }
-}))
-
-router.put('/update-user-password', isAuthenticated, catchAsyncErrors(async(req, res, next)=>{
-  try{
-    const user=await User.findById(req.user._id).select("+password");
-    const isPasswordCorrect=await user.comparePassword(req.body.oldPassword);
-    if(!isPasswordCorrect){
-      return next(new ErrorHandler("Please enter your old password correct", 400));
+router.put(
+  "/update-avatar",
+  isAuthenticated,
+  upload.single("image"),
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const existUser = await User.findById(req.user.id);
+      const existAvatarPath = `uploads/${existUser.avatar}`;
+      fs.unlinkSync(existAvatarPath);
+      const fileUrl = path.join(req.file.filename);
+      const user = await User.findByIdAndUpdate(
+        req.user.id,
+        {
+          avatar: fileUrl,
+        },
+        { new: true }
+      );
+      res.status(200).json({
+        success: true,
+        user,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error, 500));
     }
-    if(req.body.newPassword!==req.body.confirmPassword){
-      return next(new ErrorHandler('Your new password is not matching', 400));
+  })
+);
+
+router.put(
+  "/update-user-password",
+  isAuthenticated,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const user = await User.findById(req.user._id).select("+password");
+      const isPasswordCorrect = await user.comparePassword(
+        req.body.oldPassword
+      );
+      if (!isPasswordCorrect) {
+        return next(
+          new ErrorHandler("Please enter your old password correct", 400)
+        );
+      }
+      if (req.body.newPassword !== req.body.confirmPassword) {
+        return next(new ErrorHandler("Your new password is not matching", 400));
+      }
+      if (req.body.newPassword === req.body.oldPassword) {
+        return next(
+          new ErrorHandler("New password cannot similar to old password", 400)
+        );
+      }
+      user.password = req.body.newPassword;
+      await user.save();
+      res.status(200).json({
+        success: true,
+        user,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error, 500));
     }
-    if(req.body.newPassword===req.body.oldPassword){
-      return next(new ErrorHandler('New password cannot similar to old password', 400));
+  })
+);
+
+router.put(
+  "/update-user-addresses",
+  isAuthenticated,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const user = await User.findById(req.user._id);
+
+      const newAddresses =
+        user.addresses.filter(
+          (address) => address.addressType !== req.body.addressType
+        ) || [];
+      console.log(newAddresses);
+      newAddresses.push(req.body);
+      user.addresses = [...newAddresses];
+      await user.save();
+      res.status(200).json({
+        success: true,
+        user,
+      });
+    } catch (error) {
+      console.log(error);
+      return next(new ErrorHandler(error, 500));
     }
-    user.password=req.body.newPassword;
-    await user.save();
-    res.status(200).json({
-      success:true,
-      user,
-    })
-  }
-  catch(error){
-    return next(new ErrorHandler(error, 500));
-  }
-}))
+  })
+);
 
-router.put('/update-user-addresses',isAuthenticated, catchAsyncErrors(async(req, res, next)=>{
-  try{
-    const user=await User.findById(req.user._id);
+router.delete(
+  "/delete-user-address/:id",
+  isAuthenticated,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      await User.updateOne(
+        { _id: req.user._id },
+        { $pull: { addresses: { _id: req.params.id } } }
+      );
+      const user = await User.findById(req.user._id);
 
-   const newAddresses=user.addresses.filter((address)=> address.addressType!==req.body.addressType) || [];
-   console.log(newAddresses);
-    newAddresses.push(req.body);
-    user.addresses=[...newAddresses];
-    await user.save();
-    res.status(200).json({
-      success:true,
-      user
-    })
-    
-
-  }
-  catch(error){
-    console.log(error);
-    return next(new ErrorHandler(error, 500));
-  }
-}))
-
-
-router.delete('/delete-user-address/:id', isAuthenticated, catchAsyncErrors(async(req, res, next)=>{
-  try{
-    await User.updateOne({ _id:req.user._id}, {$pull:{addresses:{_id:req.params.id}}});
-    const user=await User.findById(req.user._id);
-    
-    res.status(200).json({
-      success:true,
-      user,
-    })
-  }
-  catch(error){
-    return next(new ErrorHandler(error, 500));
-  }
-}))
-
-router.get('/get-user/:id', catchAsyncErrors(async(req, res, next)=>{
-  try{
-    const user=await User.findById(req.params.id);
-    if(!user){
-      return next(new ErrorHandler("No user found", 400));
+      res.status(200).json({
+        success: true,
+        user,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error, 500));
     }
-    res.status(200).json({
-      success:true,
-      user
-    });
-  }
-  catch(error){
-    return next(new ErrorHandler(error, 500));
-  }
-}))
+  })
+);
 
-router.get('/get-admin-all-users', isAuthenticated, isAdmin, catchAsyncErrors(async(req, res, next)=>{
-  try{
-    const users=await User.find().sort({createAt:-1});
-    res.status(200).json({
-      success:true,
-      users,
-    })
-  }
-  catch(error){
-    return next(new ErrorHandler(error, 500));
-  }
-}))
-
-
-router.delete('/delete-user/:id', isAuthenticated, isAdmin, catchAsyncErrors(async(req, res, next)=>{
-  try{
-    const user=await User.findById(req.params.id);
-    if(!user){
-      return next(new ErrorHandler("No user found", 400));
+router.get(
+  "/get-user/:id",
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const user = await User.findById(req.params.id);
+      if (!user) {
+        return next(new ErrorHandler("No user found", 400));
+      }
+      res.status(200).json({
+        success: true,
+        user,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error, 500));
     }
-    await User.findByIdAndDelete(req.params.id);
-    res.status(200).json({
-      success:true,
-      message:"User deleted successfully",
-    })
-  }
-  catch(error){
-    return next(new ErrorHandler(error, 500));
-  }
-}))
+  })
+);
+
+router.get(
+  "/get-admin-all-users",
+  isAuthenticated,
+  isAdmin,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const users = await User.find().sort({ createAt: -1 });
+      res.status(200).json({
+        success: true,
+        users,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error, 500));
+    }
+  })
+);
+
+router.delete(
+  "/delete-user/:id",
+  isAuthenticated,
+  isAdmin,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const user = await User.findById(req.params.id);
+      if (!user) {
+        return next(new ErrorHandler("No user found", 400));
+      }
+      const imageId = user.avatar.public_id;
+
+      await cloudinary.v2.uploader.destroy(imageId);
+      await User.findByIdAndDelete(req.params.id);
+      res.status(200).json({
+        success: true,
+        message: "User deleted successfully",
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error, 500));
+    }
+  })
+);
 
 module.exports = router;

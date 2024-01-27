@@ -58,7 +58,7 @@ const ProductDetail = ({ data }) => {
             <div className="w-full 800px:flex block">
               <div className="w-full 800px:w-[50%]">
                 <img
-                  src={`${local_server}${data.images[select]}`}
+                  src={`${data.images[select].url}`}
                   alt=""
                   className="w-[80%] sm:h-[500px] mx-auto 1000px:mx-0 object-contain"
                 />
@@ -72,7 +72,7 @@ const ProductDetail = ({ data }) => {
                         key={index}
                       >
                         <img
-                          src={`${local_server}${image}`}
+                          src={`${image.url}`}
                           alt="Product"
                           className="h-[150px] md:h-[200px]"
                           onClick={() => setSelect(index)}
@@ -119,7 +119,7 @@ const ProductDetail = ({ data }) => {
                   <div className="flex items-center mt-[10px]">
                   <Link to={`/shop/preview/${data.shop._id}`}>
                       <img
-                        src={`${local_server}${data.shop.avatar}`}
+                        src={`${data?.shop?.avatar?.url}`}
                         className="w-[50px] h-[50px] rounded-full mr-2"
                       />
                     </Link>
@@ -207,7 +207,7 @@ const ProDetailsInfo = ({data, avgRating}) => {
           {
             data && data.reviews.map((review, index)=>(
               <div key={index} className='flex items-center'>
-                <img src={`${local_server}${review.user.avatar}`} className='w-[50px] h-[50px] rounded-full' />
+                <img src={`${review.user.avatar.url}`} className='w-[50px] h-[50px] rounded-full' />
                 <div className="pl-2">
                   <h1>{review.user.name}</h1>
                   <Ratings rating={review.rating}/>
@@ -225,7 +225,7 @@ const ProDetailsInfo = ({data, avgRating}) => {
           <div className="w-full block 800px:flex p-5">
             <div className="800px:w-[50%]">
               <div className="flex items-center gap-[10px]">
-                <img src={`${local_server}${data.shop.avatar}`} alt="" className="w-[50px] h-[50px] rounded-full" />
+                <img src={`${data?.shop?.avatar?.url}`} alt="" className="w-[50px] h-[50px] rounded-full" />
                 <div>
                 <h3 className={`${styles.shop_name}`}>
                         {data.shop.name}

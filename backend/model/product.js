@@ -28,11 +28,18 @@ const productSchema=mongoose.Schema({
         type:Number,
         required:[true, 'Please provide your product stocks']
     },
-    images:[
+    images: [
         {
-            type:String
-        }
-    ],
+          public_id: {
+            type: String,
+            required: true,
+          },
+          url: {
+            type: String,
+            required: true,
+          },
+        },
+      ],
     shopId:{
         type:String,
         required:true

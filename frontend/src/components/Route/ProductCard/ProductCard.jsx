@@ -64,7 +64,7 @@ const ProductCard = ({ data }) => {
         <div>
           <Link to={`/product/${data._id}`}>
             <img
-              src={`${local_server}${data.images && data.images[0]}`}
+              src={`${data.images && data.images[0]?.url}`}
               className="w-full h-[170px] object-contain"
             />
           </Link>

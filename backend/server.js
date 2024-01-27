@@ -1,5 +1,6 @@
 const app=require('./app');
 const connectDatabase = require('./db/Database');
+const cloudinary = require("cloudinary");
 
 
 process.on('uncaughtException', (err)=>{
@@ -16,6 +17,13 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
 
 // connect database
 connectDatabase();
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+})
+
 
   const server=app.listen(process.env.PORT, ()=>{
     console.log(`Sever started on port number ${process.env.PORT}`)

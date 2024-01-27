@@ -27,7 +27,7 @@ const SellerInbox = ({
         <div className="w-full flex p-3 items-center justify-between bg-slate-200">
           <div className="flex">
             <img
-              src={`${local_server}${userData?.avatar}`}
+              src={`${userData?.avatar?.url}`}
               alt=""
               className="w-[60px] h-[60px] rounded-full"
             />
@@ -56,7 +56,7 @@ const SellerInbox = ({
               >
                 {item.sender !== sellerId && (
                   <img
-                    src={`${local_server}${userData?.avatar}`}
+                    src={`${userData?.avatar?.url}`}
                     className="w-[40px] h-[40px] rounded-full mr-3"
                     alt=""
                   />
@@ -69,7 +69,7 @@ const SellerInbox = ({
                   >
                    {
                       item.text===""?(
-                        <img src={`${local_server}${item.images}`} alt="" className="h-[150px] w-[150px]"/>
+                        <img src={`${item.images?.url}`} alt="" className="h-[150px] w-[150px]"/>
                       ):(
                         <p>{item.text}</p>
                       )

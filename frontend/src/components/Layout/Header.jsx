@@ -160,7 +160,7 @@ const Header = () => {
               {
                 isAuthenticated?(
                   <Link to="/profile">
-                  <img src={`${local_server}${user.avatar}`} alt="" className="w-[35px] h-[35px] rounded-full"/>
+                  <img src={`${user?.avatar?.url}`} alt="" className="w-[35px] h-[35px] rounded-full"/>
                 </Link>
                 ):
                 (
@@ -207,7 +207,7 @@ const Header = () => {
           {isAuthenticated ? (
                   <Link to="/profile">
                     <img
-                      src={`${local_server}${user.avatar}`}
+                      src={`${user?.avatar?.url}`}
                       alt=""
                       className="w-[30px] h-[30px] rounded-full"
                     />
@@ -217,9 +217,9 @@ const Header = () => {
                     <CgProfile className="" size={30} />
                   </Link>
                 )}
-            <AiOutlineShoppingCart className="" size={30} />
+            <AiOutlineShoppingCart className="" size={30} onClick={()=>setOpenCart(true)} />
             <span className="bg-[#3bc177] rounded-full h-4 w-4 text-[12px] absolute top-0 right-0 leading-tight text-center text-white font-mono">
-              0
+              {cart.length}
             </span>
           </div>
         </div>
@@ -228,10 +228,10 @@ const Header = () => {
           <div className="w-full h-full bf-[#0000005f] fixed left-0 top-0">
             <div className="bg-white w-[60%] h-screen fixed top-0 left-0 p-2 overflow-y-scroll">
               <div className="flex items-center justify-between">
-                <div className="relative cursor-pointer mr-[15px]">
+                <div className="relative cursor-pointer mr-[15px]" onClick={()=>setOpenWishList(true)}>
                   <AiOutlineHeart size={30} />
                   <span className="bg-[#3bc177] rounded-full h-4 w-4 text-[12px] absolute top-0 right-0 leading-tight text-center text-white font-mono">
-                    0
+                    {wishlist.length}
                   </span>
                 </div>
                 <RxCross1
