@@ -167,7 +167,7 @@ router.get(
       res.cookie("shop_token", null, {
         expires: new Date(Date.now()),
         httpOnly: true,
-        sameSite:none,
+        sameSite:"none",
         secure:true,
       });
 
