@@ -176,7 +176,7 @@ router.get(
         message: "Logged out successfully",
       });
     } catch (error) {
-      return next(new ErrorHandler(err.message, 400));
+      return next(new ErrorHandler(error.message, 400));
     }
   })
 );
@@ -202,14 +202,21 @@ router.get(
 router.put(
   "/update-shop-avatar",
   isSeller,
-  upload.single("image"),
   catchAsyncErrors(async (req, res, next) => {
     try {
       const shop = await Shop.findById(req.seller._id);
-      const avatarPath = `uploads/${shop.avatar}`;
-      // fs.unlinkSync(avatarPath);
-      const filePath = path.join(req.file.filename);
-      shop.avatar = filePath;
+      const imageId = existsSeller.avatar.public_id;
+
+        await cloudinary.v2.uploader.destroy(imageId);
+
+        const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
+          folder: "avatars",
+          width: 150,
+        });
+        shop.avatar = {
+          public_id: myCloud.public_id,
+          url: myCloud.secure_url,
+        };
       await shop.save();
       res.status(200).json({
         success: true,

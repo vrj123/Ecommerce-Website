@@ -157,8 +157,8 @@ router.get(
       res.cookie("token", null, {
         expires: new Date(Date.now()),
         httpOnly: true,
-        sameSite:none,
-        secure:true,
+        sameSite: none,
+        secure: true,
       });
 
       res.status(200).json({
@@ -166,7 +166,7 @@ router.get(
         message: "Logged out successfully",
       });
     } catch (error) {
-      return next(new ErrorHandler(err.message, 400));
+      return next(new ErrorHandler(error.message, 400));
     }
   })
 );
@@ -203,17 +203,24 @@ router.put(
 router.put(
   "/update-avatar",
   isAuthenticated,
-  upload.single("image"),
   catchAsyncErrors(async (req, res, next) => {
     try {
       const existUser = await User.findById(req.user.id);
-      const existAvatarPath = `uploads/${existUser.avatar}`;
-      fs.unlinkSync(existAvatarPath);
-      const fileUrl = path.join(req.file.filename);
+      const imageId = existUser.avatar.public_id;
+
+      await cloudinary.v2.uploader.destroy(imageId);
+
+      const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
+        folder: "avatars",
+        width: 150,
+      });
       const user = await User.findByIdAndUpdate(
         req.user.id,
         {
-          avatar: fileUrl,
+          avatar: {
+            public_id: myCloud.public_id,
+            url: myCloud.secure_url,
+          },
         },
         { new: true }
       );
