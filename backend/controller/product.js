@@ -13,6 +13,7 @@ router.post(
   catchAsyncErrors(async (req, res, next) => {
     try {
       const shopId = req.body.shopId;
+      console.log(shopId);
       const shop = await Shop.findById(shopId);
       if (!shop) {
         return next(new ErrorHandler("Shop Id is invalid", 400));
