@@ -69,37 +69,37 @@ router.get(
   })
 );
 
-router.delete(
-  "/delete-shop-event/:id",
-  isSeller,
-  catchAsyncErrors(async (req, res, next) => {
-    try {
-      const event = await Event.findById(req.params.id);
-      if (!event) {
-        return next(new ErrorHandler("No event found", 400));
-      }
+// router.delete(
+//   "/delete-shop-event/:id",
+//   isSeller,
+//   catchAsyncErrors(async (req, res, next) => {
+//     try {
+//       const event = await Event.findById(req.params.id);
+//       if (!event) {
+//         return next(new ErrorHandler("No event found", 400));
+//       }
 
-      event.images.forEach((image) => {
-        const filePath = `uploads/${image}`;
-        fs.unlink(filePath, (err) => {
-          if (err) {
-            res.status(500).json({ message: "Error deleteing file" });
-          }
-        });
-      });
-      const eventData = await Event.findByIdAndDelete(req.params.id);
-      if (!eventData) {
-        return next(new ErrorHandler("No event found", 400));
-      }
-      res.status(201).json({
-        success: true,
-        message: "Event deleted succesfully",
-      });
-    } catch (error) {
-      return next(new ErrorHandler(error, 400));
-    }
-  })
-);
+//       event.images.forEach((image) => {
+//         const filePath = `uploads/${image}`;
+//         fs.unlink(filePath, (err) => {
+//           if (err) {
+//             res.status(500).json({ message: "Error deleteing file" });
+//           }
+//         });
+//       });
+//       const eventData = await Event.findByIdAndDelete(req.params.id);
+//       if (!eventData) {
+//         return next(new ErrorHandler("No event found", 400));
+//       }
+//       res.status(201).json({
+//         success: true,
+//         message: "Event deleted succesfully",
+//       });
+//     } catch (error) {
+//       return next(new ErrorHandler(error, 400));
+//     }
+//   })
+// );
 
 router.get(
   "/get-all-events",
