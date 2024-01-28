@@ -114,12 +114,12 @@ router.post(
       const user = await User.findOne({ email }).select("+password");
 
       if (!user) {
-        return next(new ErrorHandler("User doen't exists", 400));
+        return next(new ErrorHandler("User doesn't exists", 400));
       }
 
       const isPasswordValid = await user.comparePassword(password);
       if (!isPasswordValid) {
-        return next(new ErrorHandler("Plese provide valid information", 400));
+        return next(new ErrorHandler("Please provide valid information", 400));
       }
       sendToken(user, 201, res);
     } catch (error) {
@@ -155,7 +155,7 @@ router.get(
   catchAsyncErrors(async (req, res, next) => {
     try {
       res.cookie("token", null, {
-        expires: new Date(Date.now()),
+        expires: new Date(0),
         httpOnly: true,
         sameSite: "none",
         secure: true,

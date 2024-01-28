@@ -7,13 +7,12 @@ const cors=require('cors');
 const path=require('path');
 
 
-app.use(express.json());
-app.use(cookieParser());
 app.use(cors({
   origin:['https://ecommerce-website-8uam.vercel.app'],
   credentials:true,
 }));
-app.use('/', express.static(path.join(__dirname, './uploads')));
+app.use(express.json());
+app.use(cookieParser());
 app.use('/test', (req, res)=>{
   res.send('hello World')
 })
