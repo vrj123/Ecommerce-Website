@@ -155,10 +155,8 @@ router.get(
   catchAsyncErrors(async (req, res, next) => {
     try {
       res.cookie("token", null, {
-        expires: new Date(0),
+        expires: new Date(Date.now()),
         httpOnly: true,
-        sameSite: "none",
-        secure: true,
       });
 
       res.status(200).json({
