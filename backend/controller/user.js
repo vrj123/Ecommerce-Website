@@ -154,12 +154,19 @@ router.get(
   isAuthenticated,
   catchAsyncErrors(async (req, res, next) => {
     try {
-      res.cookie("token", null, {
+      // res.cookie("token", null, {
+      //   expires: new Date(Date.now()),
+      //   httpOnly: true,
+      //   sameSite: "none",
+      //   secure: true,
+      // });
+
+      res.status(200).cookie("token", null, {
         expires: new Date(Date.now()),
         httpOnly: true,
-      });
-
-      res.status(200).json({
+        sameSite: "none",
+        secure: true,
+      }).json({
         success: true,
         message: "Logged out successfully",
       });
