@@ -12,6 +12,7 @@ const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const { isSeller, isAuthenticated, isAdmin } = require("../middleware/auth");
 const cloudinary = require("cloudinary");
 const Product = require("../model/product");
+const setNoCache = require("../middleware/setNoCache");
 
 router.post("/create-shop", async (req, res, next) => {
   try {
@@ -162,6 +163,7 @@ router.get(
 router.get(
   "/logout",
   isSeller,
+  setNoCache,
   catchAsyncErrors(async (req, res, next) => {
     try {
       // res.cookie("shop_token", null, {

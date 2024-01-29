@@ -11,6 +11,7 @@ const sendToken = require("../utils/jwtToken");
 const cloudinary = require("cloudinary");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const { isAuthenticated, isAdmin } = require("../middleware/auth");
+const setNoCache = require("../middleware/setNoCache");
 
 router.post("/create-user", async (req, res, next) => {
   try {
@@ -152,6 +153,7 @@ router.get(
 router.get(
   "/logout",
   isAuthenticated,
+  setNoCache,
   catchAsyncErrors(async (req, res, next) => {
     try {
       // res.cookie("token", null, {
