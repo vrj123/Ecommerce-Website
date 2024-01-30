@@ -18,7 +18,7 @@ export const productReducer=createReducer(initialState, (builder)=>{
         state.error=action.payload;
         state.isLoading=false;
     })
-    .addCase('cleanError',(state)=>{
+    .addCase('cleanProductError',(state)=>{
         state.error=null
     })
     .addCase('getShopProductsRequest', (state)=>{
