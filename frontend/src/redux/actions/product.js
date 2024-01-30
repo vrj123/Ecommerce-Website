@@ -1,17 +1,17 @@
 import axios from "axios";
 import { server } from "../../server";
 
-export const createProduct = (formData) => async(dispatch) => {
+export const createProduct = (productData) => async(dispatch) => {
   try {
     dispatch({
       type: "productCreateRequest",
     });
 
-    const config = { headers: { "Content-Type": "multipart/form-data" } };
+    console.log(productData);
+
     const { data } = await axios.post(
       `${server}/product/create-product`,
-      formData,
-      config
+      productData,
     );
     dispatch({
       type: "productCreateSuccess",

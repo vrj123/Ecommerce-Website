@@ -9,15 +9,14 @@ const cloudinary = require("cloudinary");
 
 router.post(
   "/create-product",
-  isSeller,
   catchAsyncErrors(async (req, res, next) => {
     try {
-      // const shopId = req.body.shopId;
+      const shopId = req.body.shopId;
       // console.log(shopId);
-      const shop = await Shop.findById(req.seller._id);
-      if (!shop) {
-        return next(new ErrorHandler("Shop Id is invalid", 400));
-      } else {
+      const shop = await Shop.findById(shopId);
+      // if (!shop) {
+      //   // return next(new ErrorHandler("Shop Id is invalid", 400));
+      // } else {
         let images = [];
 
         if (typeof req.body.images === "string") {
@@ -39,14 +38,13 @@ router.post(
         const productData = req.body;
         productData.images = imagesLinks;
         productData.shop = shop;
-        productData.shopId=req.seller._id;
 
         const product = await Product.create(productData);
         res.status(201).json({
           success: true,
           product,
         });
-      }
+      // }
     } catch (error) {
       return new ErrorHandler(error, 400);
     }

@@ -2,11 +2,9 @@ const express=require('express');
 const Event=require('../model/event');
 const router=express.Router();
 const catchAsyncErrors=require('../middleware/catchAsyncErrors');
-const {upload}=require('../multer');
 const ErrorHandler=require('../utils/ErrorHandler');
 const CouponCode=require('../model/couponCode');
 const {isSeller}=require('../middleware/auth');
-const mongoose=require('mongoose');
 
 
 router.post('/create-coupon-code', isSeller, catchAsyncErrors(async(req, res, next)=>{
