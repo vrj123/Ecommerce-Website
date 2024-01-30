@@ -2,7 +2,6 @@ const express = require("express");
 const Product = require("../model/product");
 const router = express.Router();
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
-const { upload } = require("../multer");
 const ErrorHandler = require("../utils/ErrorHandler");
 const Shop = require("../model/shop");
 const { isSeller } = require("../middleware/auth");
@@ -10,11 +9,12 @@ const cloudinary = require("cloudinary");
 
 router.post(
   "/create-product",
+  isSeller,
   catchAsyncErrors(async (req, res, next) => {
     try {
-      const shopId = req.body.shopId;
-      console.log(shopId);
-      const shop = await Shop.findById(shopId);
+      // const shopId = req.body.shopId;
+      // console.log(shopId);
+      const shop = await Shop.findById(req.seller._id);
       if (!shop) {
         return next(new ErrorHandler("Shop Id is invalid", 400));
       } else {
@@ -39,6 +39,7 @@ router.post(
         const productData = req.body;
         productData.images = imagesLinks;
         productData.shop = shop;
+        productData.shopId=req.seller._id;
 
         const product = await Product.create(productData);
         res.status(201).json({
