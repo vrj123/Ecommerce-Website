@@ -91,7 +91,18 @@ const CreateEvent = () => {
         newForm.append('shopId', seller._id);
         newForm.append('startDate', startDate.toISOString());
         newForm.append('endDate', endDate.toISOString());
-        dispatch(createEvent(newForm));
+        dispatch(createEvent({
+          name,
+          description,
+          category,
+          tags,
+          originalPrice,
+          discountPrice,
+          stock,
+          shopId:seller?._id,
+          startDate:startDate.toISOString(),
+          endDate:endDate.toISOString(),
+        }));
     }
 
 
