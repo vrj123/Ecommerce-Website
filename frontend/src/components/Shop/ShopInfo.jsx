@@ -82,7 +82,7 @@ const ShopInfo = ({ isOwner }) => {
           </div>
           {isOwner && (
             <div className="py-3 px-4">
-              <Link to="/settings">
+              <Link to="/dashboard-settings">
                 <div
                   className={`${styles.button} !w-full text-white text-[18px]`}
                 >
