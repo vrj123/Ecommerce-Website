@@ -24,9 +24,16 @@ router.post("/create-shop", async (req, res, next) => {
       return next(new ErrorHandler("User already exists", 400));
     }
 
-    const myCloud = await cloudinary.v2.uploader.upload(avatar, {
-      folder: "avatars",
-    });
+    let myCloud=null;
+
+    try{
+      myCloud = await cloudinary.v2.uploader.upload(avatar, {
+        folder: "avatars",
+      });
+    }
+    catch(error){
+      return next(new ErrorHandler("Error while uploading images", 500));
+    }
 
     const seller = {
       name: req.body.name,
