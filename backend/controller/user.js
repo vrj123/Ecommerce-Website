@@ -19,6 +19,9 @@ router.post("/create-user", async (req, res, next) => {
 
     const userEmail = await User.findOne({ email });
 
+    console.log(email);
+    console.log(userEmail);
+
     if (userEmail) {
       return next(new ErrorHandler("User already exists", 400));
     }

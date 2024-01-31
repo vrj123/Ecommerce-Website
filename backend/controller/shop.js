@@ -20,8 +20,11 @@ router.post("/create-shop", async (req, res, next) => {
 
     const sellerEmail = await Shop.findOne({ email });
 
+    console.log(email);
+    console.log(sellerEmail);
+
     if (sellerEmail) {
-      return next(new ErrorHandler("User already exists", 400));
+      return next(new ErrorHandler("Shop already exists", 400));
     }
 
     let myCloud=null;

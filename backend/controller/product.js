@@ -13,6 +13,8 @@ router.post(
     try {
       const shopId = req.body.shopId;
       const shop = await Shop.findById(shopId);
+      console.log(shop);
+      console.log(shopId);
       // if (!shop) {
       //   return next(new ErrorHandler("Shop Id is invalid", 400));
       // } else {
