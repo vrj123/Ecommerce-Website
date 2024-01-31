@@ -8,6 +8,7 @@ const {isSeller}=require('../middleware/auth');
 
 
 router.post('/create-coupon-code', isSeller, catchAsyncErrors(async(req, res, next)=>{
+    console.log(req.body);
     try{
         const isCouponCodeExists=await CouponCode.find({name:req.body.name});
         if(isCouponCodeExists.length!==0){

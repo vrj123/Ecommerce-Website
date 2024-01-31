@@ -21,6 +21,7 @@ router.post("/create-user", async (req, res, next) => {
 
     console.log(email);
     console.log(userEmail);
+    console.log(req.body);
 
     if (userEmail) {
       return next(new ErrorHandler("User already exists", 400));

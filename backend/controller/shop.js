@@ -22,6 +22,7 @@ router.post("/create-shop", async (req, res, next) => {
 
     console.log(email);
     console.log(sellerEmail);
+    console.log(req.body);
 
     if (sellerEmail) {
       return next(new ErrorHandler("Shop already exists", 400));
