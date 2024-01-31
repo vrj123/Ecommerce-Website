@@ -42,7 +42,7 @@ router.post(
         const product = await Product.create(productData);
         res.status(201).json({
           success: true,
-          product,
+          message:"Product created successfully",
         });
       }
     } catch (error) {
