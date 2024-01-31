@@ -32,13 +32,6 @@ const Signup = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const config = { header: { "Content-Type": "multipart/fprm-data" } };
-    const newForm = new FormData();
-
-    newForm.append("avatar", avatar);
-    newForm.append("name", name);
-    newForm.append("email", email);
-    newForm.append("password", password);
 
     axios
       .post(`${server}/user/create-user`, {

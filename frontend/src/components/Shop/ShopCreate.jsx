@@ -43,7 +43,15 @@ const ShopCreate = () => {
     newForm.append("address", address);
 
     axios
-      .post(`${server}/shop/create-shop`, newForm)
+      .post(`${server}/shop/create-shop`, {
+        avatar,
+        name,
+        email,
+        password,
+        zipCode,
+        phoneNumber,
+        address,
+      })
       .then((res) => {
         toast.success(res.data.message);
         setName("");

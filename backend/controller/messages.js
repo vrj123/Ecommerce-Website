@@ -3,8 +3,6 @@ const ErrorHandler = require("../utils/ErrorHandler");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const express = require("express");
 const router = express.Router();
-const { upload } = require("../multer");
-const path=require('path');
 const cloudinary = require("cloudinary");
 
 router.post('/create-new-message', catchAsyncErrors(async(req, res, next)=>{

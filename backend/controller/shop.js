@@ -1,10 +1,7 @@
 const express = require("express");
-const path = require("path");
 const Shop = require("../model/shop");
 const router = express.Router();
-const { upload } = require("../multer");
 const ErrorHandler = require("../utils/ErrorHandler");
-const fs = require("fs");
 const jwt = require("jsonwebtoken");
 const sendMail = require("../utils/sendMail");
 const sendShopToken = require("../utils/shop_token");
@@ -20,24 +17,13 @@ router.post("/create-shop", async (req, res, next) => {
 
     const sellerEmail = await Shop.findOne({ email });
 
-    console.log(email);
-    console.log(sellerEmail);
-    console.log(req.body);
-
     if (sellerEmail) {
       return next(new ErrorHandler("Shop already exists", 400));
     }
 
-    let myCloud=null;
-
-    try{
-      myCloud = await cloudinary.v2.uploader.upload(avatar, {
-        folder: "avatars",
-      });
-    }
-    catch(error){
-      return next(new ErrorHandler("Error while uploading images", 500));
-    }
+    const myCloud = await cloudinary.v2.uploader.upload(avatar, {
+      folder: "avatars",
+    });
 
     const seller = {
       name: req.body.name,

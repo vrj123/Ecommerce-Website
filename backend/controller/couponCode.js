@@ -1,5 +1,4 @@
 const express=require('express');
-const Event=require('../model/event');
 const router=express.Router();
 const catchAsyncErrors=require('../middleware/catchAsyncErrors');
 const ErrorHandler=require('../utils/ErrorHandler');
@@ -8,7 +7,6 @@ const {isSeller}=require('../middleware/auth');
 
 
 router.post('/create-coupon-code', isSeller, catchAsyncErrors(async(req, res, next)=>{
-    console.log(req.body);
     try{
         const isCouponCodeExists=await CouponCode.find({name:req.body.name});
         if(isCouponCodeExists.length!==0){

@@ -13,12 +13,9 @@ router.post(
     try {
       const shopId = req.body.shopId;
       const shop = await Shop.findById(shopId);
-      console.log(shop);
-      console.log(shopId);
-      console.log(req.body);
-      // if (!shop) {
-      //   return next(new ErrorHandler("Shop Id is invalid", 400));
-      // } else {
+      if (!shop) {
+        return next(new ErrorHandler("Shop Id is invalid", 400));
+      } else {
         let images = [];
 
         if (typeof req.body.images === "string") {
@@ -26,6 +23,7 @@ router.post(
         } else {
           images = req.body.images;
         }
+        let imagesLinks = [];
 
         for (let i = 0; i < images.length; i++) {
           const result = await cloudinary.v2.uploader.upload(images[i], {
@@ -46,7 +44,7 @@ router.post(
           success: true,
           product,
         });
-      // }
+      }
     } catch (error) {
       return new ErrorHandler(error, 400);
     }

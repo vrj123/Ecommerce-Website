@@ -1,10 +1,7 @@
 const express = require("express");
-const path = require("path");
 const User = require("../model/user");
 const router = express.Router();
-const { upload } = require("../multer");
 const ErrorHandler = require("../utils/ErrorHandler");
-const fs = require("fs");
 const jwt = require("jsonwebtoken");
 const sendMail = require("../utils/sendMail");
 const sendToken = require("../utils/jwtToken");
@@ -18,10 +15,6 @@ router.post("/create-user", async (req, res, next) => {
     const { name, email, password, avatar } = req.body;
 
     const userEmail = await User.findOne({ email });
-
-    console.log(email);
-    console.log(userEmail);
-    console.log(req.body);
 
     if (userEmail) {
       return next(new ErrorHandler("User already exists", 400));

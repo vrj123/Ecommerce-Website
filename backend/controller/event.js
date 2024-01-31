@@ -2,11 +2,8 @@ const express = require("express");
 const Event = require("../model/event");
 const router = express.Router();
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
-const { upload } = require("../multer");
 const ErrorHandler = require("../utils/ErrorHandler");
 const Shop = require("../model/shop");
-const { isSeller } = require("../middleware/auth");
-const fs = require("fs");
 const cloudinary = require("cloudinary");
 
 router.post(
