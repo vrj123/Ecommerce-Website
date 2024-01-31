@@ -16,7 +16,7 @@ app.use(cookieParser());
 app.use('/test', (req, res)=>{
   res.send('hello World')
 })
-app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.urlencoded({extended:true, limit: "50mb"}));
 
 
 
