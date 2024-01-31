@@ -16,6 +16,7 @@ app.use('/test', (req, res)=>{
   res.send('hello World')
 })
 app.use(bodyParser.urlencoded({extended:true, limit: "50mb"}));
+app.set('serverTimeout', 120000);
 
 
 

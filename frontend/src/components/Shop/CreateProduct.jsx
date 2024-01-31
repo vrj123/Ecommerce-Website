@@ -67,7 +67,6 @@ const CreateProduct = () => {
         }));
     }
 
-    console.log(seller?._id);
 
 
   return (
