@@ -7,11 +7,11 @@ const ShopCreateProduct = () => {
   return (
     <div>
       <DashboardHeader />
-      <div className="flex ietms-center justify-between w-full">
+      <div className="flex ietms-center justify-between w-full mt-[80px]">
         <div className="w-[80px] 800px:w-[330px]">
           <DashboardSidebar active={4} />
         </div>
-        <div className="w-full flex justify-center">
+        <div className="overflow-y-scroll h-[86vh] w-full flex justify-center">
             <CreateProduct/>
         </div>
       </div>

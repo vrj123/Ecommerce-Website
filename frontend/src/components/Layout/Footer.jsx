@@ -14,7 +14,7 @@ const Footer = () => {
         </h1>
         <div className="flex gap-[10px]">
           <input type="text" placeholder="Enter your mail" className="px-4 py-2 rounded-md"/>
-          <button className="bg-[#56d879] text-white py-2 px-4 rounded-md">Submit</button>
+          <button className="bg-[#56d879] text-white py-2 px-3 rounded">Submit</button>
         </div>
       </div>
 

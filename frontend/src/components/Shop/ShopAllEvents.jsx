@@ -8,11 +8,11 @@ const ShopAllEvents = () => {
   return (
     <div>
       <DashboardHeader />
-      <div className="flex ietms-center justify-between w-full">
+      <div className="flex ietms-center justify-between w-full mt-[80px]">
         <div className="w-[80px] 800px:w-[330px]">
           <DashboardSidebar active={5} />
         </div>
-        <div className="w-full justify-center flex">
+        <div className="overflow-y-scroll h-[86vh] w-full flex justify-center">
             <AllEvents/>
         </div>
       </div>

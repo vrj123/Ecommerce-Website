@@ -32,11 +32,12 @@ const Header = () => {
   const { allProducts } = useSelector((state) => state.product);
   const { cart } = useSelector((state) => state.cart);
   const { wishlist } = useSelector((state) => state.wishlist);
+  const {isSeller}=useSelector((state)=>state.seller);
 
   const handleSearchChange = (e) => {
     const term = e.target.value;
     setSearchTerm(term);
-    const filteredProducts = productData.filter((product) => {
+    const filteredProducts = allProducts?.filter((product) => {
       return product.name.toLowerCase().includes(term.toLowerCase());
     });
     if (term === "") setSearchData(null);
@@ -95,7 +96,7 @@ const Header = () => {
           <div className={`${styles.button}`}>
             <Link to="/shop-create">
               <h1 className="text-[#fff] flex items-center">
-                Become Sellar <IoIosArrowForward className="ml-1" />
+                {isSeller ? "Seller Dashboard": "Become Seller"} <IoIosArrowForward className="ml-1" />
               </h1>
             </Link>
           </div>
@@ -286,7 +287,7 @@ const Header = () => {
               <div className="bg-white border border-black border-1 py-2 w-fit px-4 rounded-sm mt-4">
                 <Link to="/shop-create">
                   <h1 className="flex items-center">
-                    Become Sellar <IoIosArrowForward className="ml-1" />
+                  {isSeller ? "Seller Dashboard" : "Become Seller"} <IoIosArrowForward className="ml-1" />
                   </h1>
                 </Link>
               </div>
