@@ -13,20 +13,20 @@ router.post(
     try {
       const shopId = req.body.shopId;
       const shop = await Shop.findById(shopId);
-      if (!shop) {
-        return next(new ErrorHandler("Shop Id is invalid", 400));
-      } else {
-        let images = [];
+      // if (!shop) {
+      //   return next(new ErrorHandler("Shop Id is invalid", 400));
+      // } else {
+        // let images = [];
 
-        if (typeof req.body.images === "string") {
-          images.push(req.body.images);
-        } else {
-          images = req.body.images;
-        }
+        // if (typeof req.body.images === "string") {
+        //   images.push(req.body.images);
+        // } else {
+        //   images = req.body.images;
+        // }
         let imagesLinks = [];
 
-        for (let i = 0; i < images.length; i++) {
-          const result = await cloudinary.v2.uploader.upload(images[i], {
+        for (let i = 0; i < req.body.images.length; i++) {
+          const result = await cloudinary.v2.uploader.upload(req.body.images[i], {
             folder: "products",
           });
 
@@ -44,7 +44,7 @@ router.post(
           success: true,
           message:"Product created successfully",
         });
-      }
+      // }
     } catch (error) {
       return new ErrorHandler(error, 400);
     }
