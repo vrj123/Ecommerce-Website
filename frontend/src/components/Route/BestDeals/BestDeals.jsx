@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { productData } from "../../../static/data";
+import Loader from '../../Layout/Loader';
 import styles from "../../../styles/styles";
 import ProductCard from "../ProductCard/ProductCard";
 
