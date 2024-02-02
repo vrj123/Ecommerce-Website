@@ -209,10 +209,11 @@ const DashboardMessages = () => {
     <div className="w-[90%] bg-white m-5 h-[85vh] overflow-y-scroll rounded">
       {!open && (
         <>
-          <h1 className="text-center text-[30px] py-3 font-Poppins">
+          <h1 className="text-center text-[30px] py-3 font-Poppins fixed top-[80px] bg-slate-200 w-full">
             All Messages
           </h1>
           {/* All messages list */}
+          <div className="mt-[80px] overflow-y-scroll">
           {conversations &&
             conversations.map((item, index) => (
               <MessageList
@@ -228,6 +229,7 @@ const DashboardMessages = () => {
                 setActiveStatus={setActiveStatus}
               />
             ))}
+          </div>
         </>
       )}
 

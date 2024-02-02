@@ -18,7 +18,6 @@ const ShopProfileData = ({ isOwner }) => {
     dispatch(getShopAllEvents(id));
   }, [dispatch, id]);
 
-  console.log(events);
 
   return (
     <div className="w-full">

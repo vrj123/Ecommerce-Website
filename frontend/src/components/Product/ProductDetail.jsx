@@ -44,9 +44,9 @@ const ProductDetail = ({ data }) => {
     }
   };
 
-  const shopProducts=allProducts && allProducts.filter((product)=>product.shopId===data?.shopId);
-  let totalReviews=shopProducts && shopProducts.reduce((acc, product)=>acc+product.reviews.length, 0);
-  const totalRatings=shopProducts && shopProducts.reduce((acc, product)=>acc+ product.reviews.reduce((sum, review)=>sum+review.rating, 0), 0);
+  const shopProducts=allProducts && allProducts.filter((product)=>product?.shopId===data?.shopId);
+  let totalReviews=shopProducts && shopProducts.reduce((acc, product)=>acc+product?.reviews?.length, 0);
+  const totalRatings=shopProducts && shopProducts.reduce((acc, product)=>acc+ product?.reviews?.reduce((sum, review)=>sum+review?.rating, 0), 0);
   const avg=totalRatings / totalReviews || 0;
   const avgRating = avg.toFixed(2);
 

@@ -60,11 +60,9 @@ const AllProducts = () => {
           type: "number",
           sortable: false,
           renderCell: (params) => {
-            const d = params.row.name;
-            const product_name = d.replace(/\s+/g, "-");
             return (
               <>
-                <Link to={`/product/${product_name}`}>
+                <Link to={`/product/${params.id}`}>
                   <Button>
                     <AiOutlineEye size={20} />
                   </Button>
@@ -108,7 +106,9 @@ const AllProducts = () => {
   return (
     <>
     {isLoading ? (
-      <div>Loading...</div>
+      <div>
+        <Loader/>
+      </div>
     ) : (
       <div className="w-full mx-8 pt-1 mt-10 bg-white">
         <DataGrid
