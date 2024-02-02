@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {getShopAllProducts} from '../../../redux/actions/product';
 import {useSelector, useDispatch} from 'react-redux';
 import { AiOutlineDelete, AiOutlineEye } from 'react-icons/ai';
-// import Loader from '../../Layout/Loader';
+import Loader from '../../Layout/Loader';
 import { DataGrid } from '@mui/x-data-grid';
 import { Button } from '@mui/material';
 import {Link} from 'react-router-dom';
