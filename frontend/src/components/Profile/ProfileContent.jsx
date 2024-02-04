@@ -24,6 +24,7 @@ const ProfileContent = ({ active }) => {
   const [email, setEmail]=useState(user && user.email);
   const [phoneNumber, setPhoneNumber]=useState(user && user.phoneNumber);
   const [password, setPassword]=useState();
+  const [avatar, setAvatar]=useState(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -50,27 +51,30 @@ const ProfileContent = ({ active }) => {
   }, [user])
 
   const handleImageChange = (e) => {
-    const image = e.target.files[0];
+    const reader = new FileReader();
 
-    axios
-      .put(
-        `${server}/user/update-avatar`,
-        { image },
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-          withCredentials: true,
-        }
-      )
-      .then((res) => {
-        dispatch(loadUser());
-        // window.location.reload();
-        // setAvatar(res.data.user.avatar);
-      })
-      .catch((error) => {
-        toast.error(error.message);
-      });
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setAvatar(reader.result);
+        axios
+          .put(
+            `${server}/user/update-avatar`,
+            { avatar: reader.result },
+            {
+              withCredentials: true,
+            }
+          )
+          .then((response) => {
+            dispatch(loadUser());
+            toast.success("avatar updated successfully!");
+          })
+          .catch((error) => {
+            toast.error(error);
+          });
+      }
+    };
+
+    reader.readAsDataURL(e.target.files[0]);
   };
 
   const handleSubmit = (e) => {

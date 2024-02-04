@@ -198,7 +198,7 @@ router.get(
         shop,
       });
     } catch (error) {
-      return next(new ErrorHandler(error, 400));
+      return next(new ErrorHandler(error.message, 400));
     }
   })
 );
@@ -227,7 +227,7 @@ router.put(
         shop,
       });
     } catch (error) {
-      return next(new ErrorHandler(error, 500));
+      return next(new ErrorHandler(error.message, 500));
     }
   })
 );
@@ -263,7 +263,7 @@ router.put(
         shop,
       });
     } catch (error) {
-      return next(new ErrorHandler(error, 500));
+      return next(new ErrorHandler(error.message, 500));
     }
   })
 );
@@ -280,7 +280,7 @@ router.get(
         sellers,
       });
     } catch (error) {
-      return next(new ErrorHandler(error, 500));
+      return next(new ErrorHandler(error.message, 500));
     }
   })
 );
@@ -304,7 +304,7 @@ router.delete(
         message: "Seller deleted successfully",
       });
     } catch (error) {
-      return next(new ErrorHandler(error, 500));
+      return next(new ErrorHandler(error.message, 500));
     }
   })
 );
@@ -324,7 +324,7 @@ router.put(
         shop,
       });
     } catch (error) {
-      return next(new ErrorHandler(error, 500));
+      return next(new ErrorHandler(error.message, 500));
     }
   })
 );
@@ -344,7 +344,7 @@ router.delete(
         shop,
       });
     } catch (error) {
-      return next(new ErrorHandler(error, 500));
+      return next(new ErrorHandler(error.message, 500));
     }
   })
 );

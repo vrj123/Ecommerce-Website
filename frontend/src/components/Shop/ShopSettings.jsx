@@ -14,28 +14,32 @@ const ShopSettings = () => {
   const [address, setAddress] = useState("");
   const [description, setDescription] = useState("");
   const [phoneNumber, setPhoneNumber] = useState(null);
+  const [avatar, setAvatar]=useState(null);
   const dispatch=useDispatch();
 
   const imageChangeHandler = (e) => {
-    const image = e.target.files[0];
-    axios
-      .put(
-        `${server}/shop/update-shop-avatar`,
-        { image },
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-          withCredentials: true,
-        }
-      )
-      .then(() => {
-          dispatch(loadSeller());
-          toast.success("Avatar updated succesfully");
-      })
-      .catch((error) => {
-        toast.error(error.response.data.message);
-      });
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setAvatar(reader.result);
+        axios
+          .put(
+            `${server}/shop/update-shop-avatar`,
+            { avatar: reader.result },
+            {
+              withCredentials: true,
+            }
+          )
+          .then((res) => {
+            dispatch(loadSeller());
+            toast.success("Avatar updated successfully!");
+          })
+          .catch((error) => {
+            toast.error(error.response.data.message);
+          });
+      }
+    }
   };
 
   const handleSubmit = async(e) => {
@@ -65,7 +69,7 @@ const ShopSettings = () => {
       <div className="flex flex-col items-center">
         <div className="relative">
           <img
-            src={`${local_server}${seller.avatar}`}
+            src={`${seller?.avatar?.url}`}
             className="w-[150px] h-[150px] rounded-full border"
           />
           <div className="absolute bottom-3 right-3">
