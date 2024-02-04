@@ -199,7 +199,7 @@ router.put(
         user,
       });
     } catch (error) {
-      return next(new ErrorHandler(error, 400));
+      return next(new ErrorHandler(error.message, 400));
     }
   })
 );
@@ -233,7 +233,7 @@ router.put(
         user,
       });
     } catch (error) {
-      return next(new ErrorHandler(error, 500));
+      return next(new ErrorHandler(error.message, 500));
     }
   })
 );
@@ -267,7 +267,7 @@ router.put(
         user,
       });
     } catch (error) {
-      return next(new ErrorHandler(error, 500));
+      return next(new ErrorHandler(error.message, 500));
     }
   })
 );
@@ -293,7 +293,7 @@ router.put(
       });
     } catch (error) {
       console.log(error);
-      return next(new ErrorHandler(error, 500));
+      return next(new ErrorHandler(error.message, 500));
     }
   })
 );
@@ -314,7 +314,7 @@ router.delete(
         user,
       });
     } catch (error) {
-      return next(new ErrorHandler(error, 500));
+      return next(new ErrorHandler(error.message, 500));
     }
   })
 );
@@ -332,7 +332,7 @@ router.get(
         user,
       });
     } catch (error) {
-      return next(new ErrorHandler(error, 500));
+      return next(new ErrorHandler(error.message, 500));
     }
   })
 );
@@ -349,7 +349,7 @@ router.get(
         users,
       });
     } catch (error) {
-      return next(new ErrorHandler(error, 500));
+      return next(new ErrorHandler(error.message, 500));
     }
   })
 );
@@ -373,7 +373,7 @@ router.delete(
         message: "User deleted successfully",
       });
     } catch (error) {
-      return next(new ErrorHandler(error, 500));
+      return next(new ErrorHandler(error.message, 500));
     }
   })
 );

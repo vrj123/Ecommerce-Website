@@ -9,8 +9,8 @@ const ShopHomePage = () => {
     <div>
       <DashboardHeader/>
       <div className={`${styles.section} bg-[#f5f5f5] mt-[80px]`}>
-      <div className="w-full 800px:flex py-10 justify-between">
-        <div className="800px:w-[20%] bg-[#fff] rounded-[4px] shadow-sm 800px:overflow-y-scroll 800px:h-[87vh] h-fit 800px:sticky top-10 left-0 z-10">
+      <div className="w-full 800px:flex justify-between">
+        <div className="800px:w-[20%] bg-[#fff] rounded-[4px] shadow-sm 800px:overflow-y-scroll 800px:h-[87vh] h-fit z-10">
           <ShopInfo isOwner={true} />
         </div>
         <div className="800px:w-[78%] rounded-[4px] h-[87vh] overflow-y-scroll pt-2">

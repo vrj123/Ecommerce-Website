@@ -209,7 +209,7 @@ router.put(
   catchAsyncErrors(async (req, res, next) => {
     try {
       const shop = await Shop.findById(req.seller._id);
-      const imageId = existsSeller.avatar.public_id;
+      const imageId = shop.avatar.public_id;
 
         await cloudinary.v2.uploader.destroy(imageId);
 

@@ -196,18 +196,19 @@ const ProDetailsInfo = ({data, avgRating}) => {
 
       {active === 1 ? (
         <>
-          <p className="py-2 text-[18px] leading-8 pb-10 whitespace-pre-line">
+          <p className="py-2 text-[18px] leading-8 pb-10 whitespace-pre-line h-[40vh]">
             {data.description}
           </p>
         </>
       ) : null}
 
       {active === 2 ? (
-        <p className="flex flex-col h-[40vh] overflow-y-scroll py-4">
+        <p className="flex flex-col h-[40vh] overflow-y-scroll py-4 h-[40vh]">
           {
-            data && data.reviews.map((review, index)=>(
+            (data && data?.reviews!==null) ?(
+              data.reviews.map((review, index)=>(
               <div key={index} className='flex items-center'>
-                <img src={`${review.user.avatar.url}`} className='w-[50px] h-[50px] rounded-full' />
+                <img src={`${local_server}${review.user.avatar}`} className='w-[50px] h-[50px] rounded-full' />
                 <div className="pl-2">
                   <h1>{review.user.name}</h1>
                   <Ratings rating={review.rating}/>
@@ -215,14 +216,16 @@ const ProDetailsInfo = ({data, avgRating}) => {
                   <p>{review.createdAt}</p>
                 </div>
               </div>
-            )) 
+            ))):(
+              <div>No reviews yet!</div>
+            )
           }
         </p>
       ) : null}
 
       {
         active===3?(
-          <div className="w-full block 800px:flex p-5">
+          <div className="w-full block 800px:flex p-5 h-[40vh]">
             <div className="800px:w-[50%]">
               <div className="flex items-center gap-[10px]">
                 <img src={`${data?.shop?.avatar?.url}`} alt="" className="w-[50px] h-[50px] rounded-full" />
