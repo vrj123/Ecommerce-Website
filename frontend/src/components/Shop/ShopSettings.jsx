@@ -39,7 +39,9 @@ const ShopSettings = () => {
             toast.error(error.response.data.message);
           });
       }
-    }
+    };
+
+    reader.readAsDataURL(e.target.files[0]);
   };
 
   const handleSubmit = async(e) => {

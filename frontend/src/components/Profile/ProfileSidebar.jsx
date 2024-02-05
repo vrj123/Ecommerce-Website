@@ -25,7 +25,7 @@ const ProfileSidebar = ({active, setActive}) => {
     }
 
   return (
-    <div className='w-full bg-white rounded-[10px] pt-8 p-4 shadow-sm sticky 800px:top-[0px] top-[18%]'>
+    <div className='w-full bg-white pt-8 p-4 shadow-sm overflow-y-scroll h-[87vh]'>
         <div className={`flex items-center cursor-pointer w-full mb-8 text-${active===1?"[red]":null}`}
         onClick={()=>setActive(1)}>
             <RxPerson/>

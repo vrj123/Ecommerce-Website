@@ -80,10 +80,11 @@ const ProfileContent = ({ active }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(updateUserInformation(email, phoneNumber, password, name));
+    toast.success("Information updated successfully");
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full w-full h-[87vh] overflow-y-scroll">
       {active === 1 && (
         <>
           <div className="w-full flex justify-center">
