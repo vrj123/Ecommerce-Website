@@ -103,6 +103,8 @@ const Header = () => {
         </div>
       </div> */}
 
+      <TopHeader/>
+
       <div
         className={`${
           active === true ? "sticky top-0 left-0 shadow-sm z-10" : null
