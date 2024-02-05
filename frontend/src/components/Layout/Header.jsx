@@ -9,6 +9,7 @@ import {
   AiOutlineShoppingCart,
 } from "react-icons/ai";
 import { IoIosArrowForward, IoIosArrowDown } from "react-icons/io";
+import TopHeader from './TopHeader';
 import { BiMenuAltLeft } from "react-icons/bi";
 import DropDown from "./DropDown";
 import Navbar from "./Navbar";
