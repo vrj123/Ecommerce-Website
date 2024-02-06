@@ -16,7 +16,7 @@ const FAQPage = () => {
   return (
     <div>
       <Header />
-      <div className={`${styles.section}`}>
+      <div className={`${styles.section} mt-[100px]`}>
         <h1 className={`${styles.heading} mt-[30px]`}>FAQ's</h1>
         <div>
           {Faqs.map((faq, index) => {

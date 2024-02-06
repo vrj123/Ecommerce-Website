@@ -13,7 +13,7 @@ import { IoSettingsOutline } from "react-icons/io5";
 
 const AdminSidebar = ({ active }) => {
   return (
-    <div className="w-full h-[89vh] bg-white sticky left-0 top-[80px] overflow-y-scroll z-10 shadow-sm">
+    <div className="w-full h-[86vh] bg-white sticky left-0 top-[80px] overflow-y-scroll z-10 shadow-sm">
       <div className="w-full flex items-center p-4">
         <Link
           to="/admin/dashboard"

@@ -1,21 +1,22 @@
-import React from 'react'
-import AdminHeader from '../Admin/Layout/AdminHeader';
-import AdminSidebar from '../Admin/Layout/AdminSidebar';
-import AllProducts from './AllProducts';
-
+import React from "react";
+import AdminHeader from "../Admin/Layout/AdminHeader";
+import AdminSidebar from "../Admin/Layout/AdminSidebar";
+import AllProducts from "./AllProducts";
 
 const AdminDashboardSellers = () => {
   return (
     <div>
-        <AdminHeader/>
-        <div className='w-full flex gap-[10px]'>
-            <div className='w-[80px] 800px:w-[330px]'>
-                <AdminSidebar active={5}/>
-            </div>
-            <AllProducts/>
+      <AdminHeader />
+      <div className="flex ietms-center justify-between w-full mt-[80px]">
+        <div className="w-[80px] 800px:w-[330px]">
+          <AdminSidebar active={5} />
         </div>
+        <div className="overflow-y-scroll h-[86vh] w-full flex justify-center">
+          <AllProducts />
+        </div>
+      </div>
     </div>
-  )
-}
+  );
+};
 
 export default AdminDashboardSellers;

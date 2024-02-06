@@ -7,11 +7,13 @@ const AdminDashboardPage = () => {
   return (
     <div>
         <AdminHeader/>
-        <div className='w-full flex'>
+        <div className='flex ietms-center justify-between w-full mt-[80px]'>
             <div className='w-[80px] 800px:w-[330px]'>
                 <AdminSidebar active={1}/>
             </div>
+            <div className="overflow-y-scroll h-[86vh] w-full flex justify-center">
             <AdminDashboardMain/>
+            </div>
         </div>
     </div>
   )
