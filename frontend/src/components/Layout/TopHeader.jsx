@@ -40,7 +40,7 @@ const TopHeader = () => {
   return (
     <div>
       <div className={`px-2 shadow-sm z-20`}>
-        <div className="hidden 800px:py-[10px] 800px:flex items-center justify-between">
+        <div className="hidden h-[80px] 800px:flex items-center justify-between">
           <div>
             <Link to="/">
               <img
@@ -91,7 +91,7 @@ const TopHeader = () => {
           </div>
         </div>
       </div>
-      <div className="w-full h-[50px] sticky top-0 left-0 bg-[#fff] shadow-sm z-10 800px:hidden">
+      <div className="w-full h-[80px] fixed top-0 left-0 bg-[#fff] shadow-sm z-10 800px:hidden">
         <div className="w-full flex items-center justify-between h-full">
           <div>
             <AiOutlineMenu

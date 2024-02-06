@@ -580,7 +580,7 @@ const Address = () => {
   };
 
   return (
-    <div className="w-full px-5">
+    <div className="w-full px-5 pt-4">
       {open && (
         <div className="fixed top-0 left-0 w-full h-screen bg-[#0000006a] z-[2000] flex items-center justify-center">
           <div className="w-[90%] 800px:w-[40%] h-[80vh] bg-white rounded-md p-4 overflow-y-scroll">
@@ -734,7 +734,7 @@ const Address = () => {
                 {address.address1} {address.address2}
               </h6>
             </div>
-            <div className="pl-8 flex items-center">
+            <div className="pl-8 flex items-center hidden 800px:block">
               <h6 className="text-[12px] 800px:text-[unset]">
                 {user.phoneNumber}
               </h6>
