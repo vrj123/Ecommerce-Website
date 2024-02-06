@@ -24,7 +24,7 @@ const DashboardMessages = () => {
   const [activeStatus, setActiveStatus] = useState(false);
   const [open, setOpen] = useState(false);
   const scrollRef = useRef(null);
-  const [images, setImages]=useState(null);
+  const [images, setImages] = useState(null);
 
   useEffect(() => {
     socketId.on("getMessage", (data) => {
@@ -58,7 +58,7 @@ const DashboardMessages = () => {
       }
     };
     getConversation();
-  }, [seller,messages]);
+  }, [seller, messages]);
 
   useEffect(() => {
     if (seller) {
@@ -69,7 +69,6 @@ const DashboardMessages = () => {
       });
     }
   }, [seller]);
-
 
   const onlineCheck = (chat) => {
     const chatMembers = chat.members.find((member) => member !== seller?._id);
@@ -153,7 +152,7 @@ const DashboardMessages = () => {
     scrollRef.current?.scrollIntoView({ behaviour: "smooth" });
   }, [messages]);
 
-  const handleImageUpload=(e)=>{
+  const handleImageUpload = (e) => {
     const reader = new FileReader();
 
     reader.onload = () => {
@@ -164,46 +163,49 @@ const DashboardMessages = () => {
     };
 
     reader.readAsDataURL(e.target.files[0]);
-  }
+  };
 
-  const imageSendingHandler=(image)=>{
-    const message={
-      sender:seller._id,
-      text:newMessage,
-      images:image,
-      conversationId:currentChat._id,
+  const imageSendingHandler = (image) => {
+    const message = {
+      sender: seller._id,
+      text: newMessage,
+      images: image,
+      conversationId: currentChat._id,
     };
 
-    const newForm=new FormData();
-    newForm.append("sender", seller._id);
-    newForm.append("text", newMessage);
-    newForm.append("file", image);
-    newForm.append("conversationId", currentChat._id);
+    const receiverId = currentChat.members.find(
+      (member) => member != seller._id
+    );
 
-
-    const receiverId=currentChat.members.find((member)=>member!=seller._id);
-
-    socketId.emit('sendMessage', {
-      senderId:seller._id,
+    socketId.emit("sendMessage", {
+      senderId: seller._id,
       receiverId,
-      images:image
-    })
-    try{
-      const config = { header: { "Content-Type": "multipart/form-data" } };
-      axios.post(`${server}/message/create-new-message`, newForm, config).then((res)=>{
-        setImages(null);
-        setMessages([...messages, message]);
-        updateLastMessageForImage();
-      })
-    }
-    catch(error){
+      images: image,
+    });
+    try {
+      axios
+        .post(`${server}/message/create-new-message`, {
+          sender: seller._id,
+          text: newMessage,
+          images: image,
+          conversationId: currentChat._id,
+        })
+        .then((res) => {
+          setImages(null);
+          setMessages([...messages, message]);
+          updateLastMessageForImage();
+        });
+    } catch (error) {
       console.log(error);
     }
-  }
+  };
 
-  const updateLastMessageForImage=()=>{
-    axios.put(`${server}/conversation/update-last-message/${currentChat._id}`, {lastMessage:'Photo', lastMessageId:seller._id})
-  }
+  const updateLastMessageForImage = () => {
+    axios.put(`${server}/conversation/update-last-message/${currentChat._id}`, {
+      lastMessage: "Photo",
+      lastMessageId: seller._id,
+    });
+  };
 
   return (
     <div className="w-[90%] bg-white m-5 h-[85vh] overflow-y-scroll rounded">
@@ -214,21 +216,21 @@ const DashboardMessages = () => {
           </h1>
           {/* All messages list */}
           <div className="mt-[80px] overflow-y-scroll">
-          {conversations &&
-            conversations.map((item, index) => (
-              <MessageList
-                data={item}
-                key={index}
-                index={index}
-                setOpen={setOpen}
-                setCurrentChat={setCurrentChat}
-                me={seller._id}
-                setUserData={setUserData}
-                userData={userData}
-                online={onlineCheck(item)}
-                setActiveStatus={setActiveStatus}
-              />
-            ))}
+            {conversations &&
+              conversations.map((item, index) => (
+                <MessageList
+                  data={item}
+                  key={index}
+                  index={index}
+                  setOpen={setOpen}
+                  setCurrentChat={setCurrentChat}
+                  me={seller._id}
+                  setUserData={setUserData}
+                  userData={userData}
+                  online={onlineCheck(item)}
+                  setActiveStatus={setActiveStatus}
+                />
+              ))}
           </div>
         </>
       )}
@@ -284,7 +286,6 @@ const MessageList = ({
     getUser();
   }, [me, data]);
 
-
   return (
     <div
       className={`w-full flex p-3 px-3 ${
@@ -333,9 +334,8 @@ const SellerInbox = ({
   sellerId,
   userData,
   activeStatus,
-  handleImageUpload
+  handleImageUpload,
 }) => {
-
   return (
     <div className="w-full min-h-full flex flex-col justify-between">
       {/* message header */}
@@ -378,17 +378,22 @@ const SellerInbox = ({
               <div>
                 <div
                   className={`w-max p-2 rounded ${
-                    item.text!=="" ? item.sender === sellerId ? "bg-[#000]" : "bg-[#38c776]" : "border"
+                    item.text !== ""
+                      ? item.sender === sellerId
+                        ? "bg-[#000]"
+                        : "bg-[#38c776]"
+                      : "border"
                   } text-[#fff] h-min`}
                 >
-                  {
-                    item.text===""?(
-                      <img src={`${item?.images?.url}`} alt="" className="h-[150px] w-[150px]"/>
-                    ):(
-                      <p>{item.text}</p>
-                    )
-                    
-                  }
+                  {item.text === "" ? (
+                    <img
+                      src={`${item?.images?.url}`}
+                      alt=""
+                      className="h-[150px] w-[150px]"
+                    />
+                  ) : (
+                    <p>{item.text}</p>
+                  )}
                 </div>
 
                 <p className="text-[12px] text-[#000000d3] pt-1">
@@ -406,9 +411,14 @@ const SellerInbox = ({
         onSubmit={sendMessageHandler}
       >
         <div className="w-[30px]">
-          <input type="file" className="hidden" id='msg_img' onChange={handleImageUpload}/>
+          <input
+            type="file"
+            className="hidden"
+            id="msg_img"
+            onChange={handleImageUpload}
+          />
           <label htmlFor="msg_img">
-          <TfiGallery className="cursor-pointer" size={20} />
+            <TfiGallery className="cursor-pointer" size={20} />
           </label>
         </div>
         <div className="w-full">

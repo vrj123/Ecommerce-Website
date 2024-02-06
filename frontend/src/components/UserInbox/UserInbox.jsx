@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import SellerInbox from './SellerInbox';
+import SellerInbox from "./SellerInbox";
 import { local_server, server } from "../../server";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineArrowRight, AiOutlineSend } from "react-icons/ai";
@@ -11,7 +11,6 @@ import socketIO from "socket.io-client";
 import { format } from "timeago.js";
 const ENDPOINT = "https://ecommerce-socket-inuk.onrender.com/";
 const socketId = socketIO(ENDPOINT, { transports: ["websocket"] });
-
 
 const UserInbox = () => {
   const { user } = useSelector((state) => state.user);
@@ -25,7 +24,7 @@ const UserInbox = () => {
   const [activeStatus, setActiveStatus] = useState(false);
   const [open, setOpen] = useState(false);
   const scrollRef = useRef(null);
-  const [images, setImages]=useState(null);
+  const [images, setImages] = useState(null);
   useEffect(() => {
     socketId.on("getMessage", (data) => {
       setArrivalMessage({
@@ -151,7 +150,7 @@ const UserInbox = () => {
     scrollRef.current?.scrollIntoView({ beahaviour: "smooth" });
   }, [messages]);
 
-  const handleImageUpload=(e)=>{
+  const handleImageUpload = (e) => {
     const reader = new FileReader();
 
     reader.onload = () => {
@@ -162,46 +161,47 @@ const UserInbox = () => {
     };
 
     reader.readAsDataURL(e.target.files[0]);
-}
-
-const imageSendingHandler=(image)=>{
-  const message={
-    sender:user._id,
-    text:newMessage,
-    images:image,
-    conversationId:currentChat._id,
   };
 
-  const newForm=new FormData();
-  newForm.append("sender", user._id);
-  newForm.append("text", newMessage);
-  newForm.append("images", image);
-  newForm.append("conversationId", currentChat._id);
+  const imageSendingHandler = (image) => {
+    const message = {
+      sender: user._id,
+      text: newMessage,
+      images: image,
+      conversationId: currentChat._id,
+    };
 
+    const receiverId = currentChat.members.find((member) => member != user._id);
 
-  const receiverId=currentChat.members.find((member)=>member!=user._id);
+    socketId.emit("sendMessage", {
+      senderId: user._id,
+      receiverId,
+      images: image,
+    });
+    try {
+      axios
+        .post(`${server}/message/create-new-message`, {
+          sender: user._id,
+          text: newMessage,
+          images: image,
+          conversationId: currentChat._id,
+        })
+        .then((res) => {
+          setImages(null);
+          setMessages([...messages, message]);
+          updateLastMessageForImage();
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  socketId.emit('sendMessage', {
-    senderId:user._id,
-    receiverId,
-    images:image
-  })
-  try{
-    const config = { header: { "Content-Type": "multipart/form-data" } };
-    axios.post(`${server}/message/create-new-message`, newForm, config).then((res)=>{
-      setImages(null);
-      setMessages([...messages, message]);
-      updateLastMessageForImage();
-    })
-  }
-  catch(error){
-    console.log(error);
-  }
-}
-
-const updateLastMessageForImage=()=>{
-  axios.put(`${server}/conversation/update-last-message/${currentChat._id}`, {lastMessage:'Photo', lastMessageId:user._id})
-}
+  const updateLastMessageForImage = () => {
+    axios.put(`${server}/conversation/update-last-message/${currentChat._id}`, {
+      lastMessage: "Photo",
+      lastMessageId: user._id,
+    });
+  };
 
   return (
     <div className="w-full">
@@ -318,6 +318,5 @@ const MessageList = ({
     </div>
   );
 };
-
 
 export default UserInbox;
