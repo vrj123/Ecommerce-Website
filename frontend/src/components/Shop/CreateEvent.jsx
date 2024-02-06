@@ -58,8 +58,6 @@ const CreateEvent = () => {
 
     const handleImageChange=(e)=>{
       const files = Array.from(e.target.files);
-
-      setImages([]);
   
       files.forEach((file) => {
         const reader = new FileReader();

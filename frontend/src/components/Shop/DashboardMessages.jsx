@@ -189,8 +189,8 @@ const DashboardMessages = () => {
       images:image
     })
     try{
-      // const config = { header: { "Content-Type": "multipart/form-data" } };
-      axios.post(`${server}/message/create-new-message`, newForm).then((res)=>{
+      const config = { header: { "Content-Type": "multipart/form-data" } };
+      axios.post(`${server}/message/create-new-message`, newForm, config).then((res)=>{
         setImages(null);
         setMessages([...messages, message]);
         updateLastMessageForImage();

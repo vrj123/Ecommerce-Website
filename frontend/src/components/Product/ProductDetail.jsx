@@ -53,7 +53,7 @@ const ProductDetail = ({ data }) => {
   return (
     <div className="bg-white">
       {data ? (
-        <div className={`${styles.section} w-[90%] 800px:w-[80%]`}>
+        <div className={`${styles.section} w-[90%] 800px:w-[80%] mt-[100px]`}>
           <div className="w-full py-5">
             <div className="w-full 800px:flex block">
               <div className="w-full 800px:w-[50%]">
@@ -196,14 +196,14 @@ const ProDetailsInfo = ({data, avgRating}) => {
 
       {active === 1 ? (
         <>
-          <p className="py-2 text-[18px] leading-8 pb-10 whitespace-pre-line h-[40vh]">
+          <p className="py-2 text-[18px] leading-8 pb-10 whitespace-pre-line h-[40vh] overflow-y-scroll">
             {data.description}
           </p>
         </>
       ) : null}
 
       {active === 2 ? (
-        <p className="flex flex-col h-[40vh] overflow-y-scroll py-4 h-[40vh]">
+        <p className="flex flex-col h-[40vh] overflow-y-scroll py-4">
           {
             (data && data?.reviews!==null) ?(
               data.reviews.map((review, index)=>(
@@ -225,7 +225,7 @@ const ProDetailsInfo = ({data, avgRating}) => {
 
       {
         active===3?(
-          <div className="w-full block 800px:flex p-5 h-[40vh]">
+          <div className="w-full block 800px:flex p-5 h-[40vh] overflow-y-scroll">
             <div className="800px:w-[50%]">
               <div className="flex items-center gap-[10px]">
                 <img src={`${data?.shop?.avatar?.url}`} alt="" className="w-[50px] h-[50px] rounded-full" />

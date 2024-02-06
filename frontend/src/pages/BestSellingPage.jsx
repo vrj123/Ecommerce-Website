@@ -19,7 +19,7 @@ const BestSellingPage = () => {
   return (
     <div>
         <Header/>
-        <div className={`${styles.section} mt-[100px] mb-12`}>
+        <div className={`${styles.section} mt-[100px] mb-12 800px:mt-[20px]`}>
         {data && data.length === 0 ? (
           <div>
             <h1 className="font-bold text-[30px] text-center mb-[30px]">

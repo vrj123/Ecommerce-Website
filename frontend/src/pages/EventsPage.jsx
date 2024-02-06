@@ -10,7 +10,7 @@ const EventsPage = () => {
   return (
     <div>
     <Header/>
-      <div className={`${styles.section} my-12 mt-[100px]`}>
+      <div className={`${styles.section} my-12 mt-[100px] 800px:mt-[20px]`}>
       {allEvents && allEvents.length === 0 ? (
           <div>Currently there is no event!</div>
         ) : (

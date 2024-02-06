@@ -7,7 +7,6 @@ export const createProduct = (productData) => async(dispatch) => {
       type: "productCreateRequest",
     });
 
-    console.log(productData);
 
     const { data } = await axios.post(
       `${server}/product/create-product`,

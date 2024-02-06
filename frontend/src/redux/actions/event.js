@@ -1,17 +1,15 @@
 import axios from "axios";
 import { server } from "../../server";
 
-export const createEvent = (formData) => async(dispatch) => {
+export const createEvent = (eventData) => async(dispatch) => {
   try {
     dispatch({
       type: "eventCreateRequest",
     });
 
-    const config = { headers: { "Content-Type": "multipart/form-data" } };
     const { data } = await axios.post(
       `${server}/event/create-event`,
-      formData,
-      config
+      eventData,
     );
     dispatch({
       type: "eventCreateSuccess",
